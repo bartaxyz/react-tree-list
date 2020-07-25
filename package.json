@@ -1,0 +1,25 @@
+{
+  "name": "react-tree-list",
+  "version": "0.0.1",
+  "description": "Tree list UI component for React",
+  "main": " ",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bartaxyz/react-tree-list.git"
+  },
+  "keywords": [
+    "tree",
+    "list",
+    "ui",
+    "react"
+  ],
+  "author": "Ondřej Bárta (@bartaxyz)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bartaxyz/react-tree-list/issues"
+  },
+  "homepage": "https://github.com/bartaxyz/react-tree-list#readme"
+}
