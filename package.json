@@ -1,10 +1,13 @@
 {
-  "name": "react-tree-list",
+  "name": "@bartaxyz/react-tree-list",
   "version": "0.0.1",
   "description": "Tree list UI component for React",
   "main": " ",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "storybook": "start-storybook",
+    "build-storybook": "build-storybook -c .storybook -o .out",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -21,5 +24,25 @@
   "bugs": {
     "url": "https://github.com/bartaxyz/react-tree-list/issues"
   },
-  "homepage": "https://github.com/bartaxyz/react-tree-list#readme"
+  "homepage": "https://github.com/bartaxyz/react-tree-list#readme",
+  "devDependencies": {
+    "@babel/core": "^7.10.5",
+    "@storybook/addon-info": "^5.3.19",
+    "@storybook/react": "^5.3.19",
+    "@types/jest": "^26.0.7",
+    "@types/styled-components": "^5.1.1",
+    "babel-loader": "^8.1.0",
+    "jest": "^26.1.0",
+    "react": "^16.13.1",
+    "react-docgen-typescript-loader": "^3.7.2",
+    "react-dom": "^16.13.1",
+    "styled-components": "^5.1.1",
+    "ts-jest": "^26.1.3",
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7"
+  },
+  "peerDependencies": {
+    "react": ">=16",
+    "react-dom": ">=16"
+  }
 }
