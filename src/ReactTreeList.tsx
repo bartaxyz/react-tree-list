@@ -28,6 +28,16 @@ export interface ReactTreeListItemType {
    * TODO
    */
   open?: boolean;
+
+  /**
+   * TODO
+   */
+  icon?: React.ReactNode;
+
+  /**
+   * Component that'll be rendered as arrow
+   */
+  arrow?: React.ReactNode;
 }
 
 export interface ReactTreeListProps {
@@ -122,10 +132,8 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       children.push(
         <ReactTreeListItem
           key={item.id}
+          item={item}
           indent={indent}
-          label={item.id} // item.label}
-          hasChildren={!!item.children}
-          open={item.open}
           onArrowClick={() => {
             if (item.id) {
               updateById(item.id, { open: !item.open });

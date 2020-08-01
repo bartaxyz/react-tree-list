@@ -1,21 +1,37 @@
 import React from "react";
 import styled from "styled-components";
+import { ReactTreeListItemType } from "./ReactTreeList";
 
 export interface ReactTreeListItemProps {
+  item: ReactTreeListItemType;
   indent: number;
-  label?: string;
-  hasChildren: boolean;
-  open?: boolean;
-  onArrowClick?: React.HTMLAttributes<HTMLDivElement>["onClick"];
+  onFocusEnter?(item: ReactTreeListItemType): void;
+  onArrowClick?(item: ReactTreeListItemType): void;
 }
 
 export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = (props) => {
-  const { indent, label, onArrowClick } = props;
+  const { indent, item } = props;
+
+  const { label } = item;
+
+  const onFocusKeyPress: React.HTMLAttributes<HTMLDivElement>["onKeyPress"] = (
+    event
+  ) => {
+    if (event.which === 13) {
+      onArrowClick();
+    }
+  };
+
+  const onArrowClick = () => {
+    if (props.onArrowClick) {
+      props.onArrowClick(item);
+    }
+  };
 
   return (
-    <Root {...props}>
-      <Arrow onClick={onArrowClick}>ᐅ</Arrow>
-      <Icon>⬛</Icon>
+    <Root {...props} onKeyPress={onFocusKeyPress}>
+      {item.arrow && <Arrow onClick={onArrowClick}>{item.arrow}</Arrow>}
+      {item.icon && <Icon>{item.icon}</Icon>}
       <Label>
         {label} {indent}
       </Label>
@@ -23,14 +39,11 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = (props) => {
   );
 };
 
-const RootComponent: React.FC<ReactTreeListItemProps> = ({
-  indent,
-  label,
-  hasChildren,
-  open,
-  onArrowClick,
-  ...props
-}) => <div draggable={true} {...props} />;
+const RootComponent: React.FC<
+  ReactTreeListItemProps & React.HTMLAttributes<HTMLDivElement>
+> = ({ indent, item, onFocusEnter, onArrowClick, ...props }) => (
+  <div draggable={true} tabIndex={0} {...props} />
+);
 
 const Arrow = styled.div``;
 const Icon = styled.div``;
@@ -43,13 +56,13 @@ const Root = styled(RootComponent)`
   padding-left: ${({ indent }) => indent * 24 + 12}px;
   align-items: center;
 
-  &:hover {
+  &:focus {
     outline: 1px solid red;
   }
 
   ${Arrow} {
     transition: 100ms;
-    visibility: ${({ hasChildren }) => (hasChildren ? "visible" : "hidden")};
-    transform: rotate(${({ open }) => (open ? 90 : 0)}deg);
+    visibility: ${({ item }) => (item.children ? "visible" : "hidden")};
+    transform: rotate(${({ item }) => (item.open ? 90 : 0)}deg);
   }
 `;

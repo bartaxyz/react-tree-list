@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { ReactTreeList, ReactTreeListProps } from "../src";
+import { getRandomEmoji } from "./utils/getRandomEmoji";
 
 export default { title: "Tree List" };
 
@@ -9,6 +10,7 @@ export const regular = () => {
     {
       label: "none",
       open: true,
+      icon: getRandomEmoji(),
       children: [
         {
           label: "Heyo",
@@ -106,6 +108,7 @@ export const regular = () => {
     {
       label: "none",
       open: true,
+      icon: getRandomEmoji(),
       children: [
         {
           label: "Heyo",
@@ -206,7 +209,7 @@ export const regular = () => {
     <ReactTreeList
       data={data}
       onChange={setData}
-      itemDefaults={{ open: false }}
+      itemDefaults={{ open: false, arrow: "▸", icon: getRandomEmoji() }}
     />
   );
 };

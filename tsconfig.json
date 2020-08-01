@@ -24,5 +24,5 @@
     "types": ["react", "jest"]
   },
   "include": ["src", "index.ts", "__tests__"],
-  "exclude": ["node_modules", "jest.config.js"]
+  "exclude": ["node_modules", "jest.config.js", "stories"]
 }
