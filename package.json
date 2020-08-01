@@ -8,7 +8,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook",
     "build-storybook": "build-storybook -c .storybook -o .out",
-    "build": "tsc"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
