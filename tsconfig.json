@@ -20,7 +20,8 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "types": ["react", "jest"]
   },
   "include": ["src", "index.ts", "__tests__"],
   "exclude": ["node_modules", "jest.config.js"]

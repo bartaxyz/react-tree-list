@@ -56,8 +56,6 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 }) => {
   const { generate: generateUniqueId } = useUniqueId();
 
-  console.log("render", data);
-
   const updateById = (
     updateId: string,
     updateData: Partial<ReactTreeListItemType>
@@ -125,18 +123,24 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
         <ReactTreeListItem
           key={item.id}
           indent={indent}
-          label={item.label}
+          label={item.id} // item.label}
           hasChildren={!!item.children}
           open={item.open}
           onArrowClick={() => {
-            updateById(item.id!, { open: !item.open });
+            if (item.id) {
+              updateById(item.id, { open: !item.open });
+            }
           }}
         />
       );
 
       if (item.children && item.open) {
+        // Indent up before processing children
         indent += 1;
+
         item.children.forEach(renderItem);
+
+        // Indent down after children processed
         indent -= 1;
       }
     };

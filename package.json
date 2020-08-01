@@ -1,8 +1,9 @@
 {
   "name": "@bartaxyz/react-tree-list",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Tree list UI component for React",
-  "main": " ",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook",
@@ -36,7 +37,6 @@
     "react": "^16.13.1",
     "react-docgen-typescript-loader": "^3.7.2",
     "react-dom": "^16.13.1",
-    "styled-components": "^5.1.1",
     "ts-jest": "^26.1.3",
     "ts-loader": "^8.0.1",
     "typescript": "^3.9.7"
@@ -44,5 +44,8 @@
   "peerDependencies": {
     "react": ">=16",
     "react-dom": ">=16"
+  },
+  "dependencies": {
+    "styled-components": "^5.1.1"
   }
 }
