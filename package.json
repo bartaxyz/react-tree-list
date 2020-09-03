@@ -1,6 +1,6 @@
 {
   "name": "@bartaxyz/react-tree-list",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Tree list UI component for React",
   "main": "build/index.js",
   "types": "build/index.d.ts",
