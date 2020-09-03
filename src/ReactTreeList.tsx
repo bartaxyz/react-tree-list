@@ -178,8 +178,6 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
     const item = getById(toId);
 
-    console.log("moveIdTo");
-
     if (item) {
       item.open = true;
 
@@ -193,12 +191,35 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     }
   };
 
-  const moveIdAfter = (id: string, afterId: string) => {
+  const moveIdBefore = (id: string, beforeId: string) => {
     const copyOfItem = removeByIdWithoutOnChange(id);
     let breakRecursion = false;
 
-    console.log(copyOfItem);
-    console.log(data);
+    if (!copyOfItem) return;
+
+    const recursiveMoveIdAfter = (
+      item: ReactTreeListItemType,
+      index: number,
+      array: ReactTreeListItemType[]
+    ) => {
+      if (breakRecursion) return;
+
+      if (item.id === beforeId) {
+        array.splice(index, 0, copyOfItem);
+        breakRecursion = true;
+      } else if (item.children) {
+        item.children.forEach(recursiveMoveIdAfter);
+      }
+    };
+
+    data.forEach(recursiveMoveIdAfter);
+
+    onChange([...data]);
+  };
+
+  const moveIdAfter = (id: string, afterId: string) => {
+    const copyOfItem = removeByIdWithoutOnChange(id);
+    let breakRecursion = false;
 
     if (!copyOfItem) return;
 
@@ -275,6 +296,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
               }
             }}
             onDropInside={(id, toId) => moveIdTo(id, toId)}
+            onDropBefore={(id, beforeId) => moveIdBefore(id, beforeId)}
             onDropAfter={(id, afterId) => moveIdAfter(id, afterId)}
           />
         );

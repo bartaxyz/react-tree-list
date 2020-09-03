@@ -10,12 +10,14 @@ export interface ReactTreeListItemProps {
   onArrowClick?(item: ReactTreeListItemType): void;
   onDragging?(dragging: boolean): void;
   onDropInside?(id: string, toId: string): void;
+  onDropBefore?(id: string, toId: string): void;
   onDropAfter?(id: string, toId: string): void;
 }
 
 export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
   onDragging,
   onDropInside,
+  onDropBefore,
   onDropAfter,
   allowDropBefore,
   ...props
@@ -27,6 +29,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
 
   const RootRef = useRef<HTMLDivElement>(null);
   const DropAreaRef = useRef<HTMLDivElement>(null);
+  const BeforeDropAreaRef = useRef<HTMLDivElement>(null);
   const AfterDropAreaRef = useRef<HTMLDivElement>(null);
 
   const [dragging, setDragging] = useState(false);
@@ -37,6 +40,14 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
       RootRef.current?.classList.add("dragOver");
     } else if (RootRef.current?.classList.contains("dragOver")) {
       RootRef.current?.classList.remove("dragOver");
+    }
+  };
+
+  const setBeforeDropAreaDragOver = (dragOver: boolean) => {
+    if (dragOver) {
+      BeforeDropAreaRef.current?.classList.add("dragOver");
+    } else if (BeforeDropAreaRef.current?.classList.contains("dragOver")) {
+      BeforeDropAreaRef.current?.classList.remove("dragOver");
     }
   };
 
@@ -116,10 +127,25 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     onDragLeave: () => setDragOver(false),
   };
 
+  const beforeDropArea: React.HTMLAttributes<HTMLDivElement> = {
+    onDrop: (event) => {
+      if (
+        event.dataTransfer.getData("itemId") !== item.id &&
+        onDropBefore &&
+        item.id
+      ) {
+        onDropBefore(event.dataTransfer.getData("itemId"), item.id);
+      }
+
+      setBeforeDropAreaDragOver(false);
+    },
+    onDragOver: (event) => event.preventDefault(),
+    onDragEnter: () => setBeforeDropAreaDragOver(true),
+    onDragLeave: () => setBeforeDropAreaDragOver(false),
+  };
+
   const afterDropArea: React.HTMLAttributes<HTMLDivElement> = {
     onDrop: (event) => {
-      console.log("onAfterDropAreaDrop");
-
       if (
         item.children &&
         item.children.length &&
@@ -159,11 +185,16 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
       {item.icon && <Icon>{item.icon}</Icon>}
       <Label>{label}</Label>
 
+      {allowDropBefore && (
+        <React.Fragment>
+          <BeforeDropArea ref={BeforeDropAreaRef} {...beforeDropArea} />
+          <BeforeDropAreaHighlight />
+        </React.Fragment>
+      )}
+
       <DropArea ref={DropAreaRef} {...dropArea} />
       <AfterDropArea ref={AfterDropAreaRef} {...afterDropArea} />
-      <AfterDropAreaHighlight
-        onDrop={() => console.log("afterDropAreaHighlight")}
-      />
+      <AfterDropAreaHighlight />
     </Root>
   );
 };
@@ -187,6 +218,8 @@ const Arrow = styled.div``;
 const Icon = styled.div``;
 const Label = styled.div``;
 const DropArea = styled.div``;
+const BeforeDropArea = styled.div``;
+const BeforeDropAreaHighlight = styled.div``;
 const AfterDropArea = styled.div``;
 const AfterDropAreaHighlight = styled.div``;
 const Root = styled(RootComponent)`
@@ -241,24 +274,36 @@ const Root = styled(RootComponent)`
     z-index: 10;
   }
 
-  ${AfterDropArea} {
+  ${BeforeDropArea}, ${AfterDropArea} {
     display: ${({ dragging }) => (dragging ? "block" : "none")};
     position: absolute;
-    bottom: 0;
     height: 30%;
     width: 100%;
-    transform: translateY(50%);
     z-index: 11;
+  }
+  ${BeforeDropArea} {
+    top: 0;
+    transform: translateY(-50%);
+
+    &.dragOver + ${BeforeDropAreaHighlight} {
+      display: block;
+    }
+  }
+  ${AfterDropArea} {
+    bottom: 0;
+    transform: translateY(50%);
 
     &.dragOver + ${AfterDropAreaHighlight} {
       display: block;
     }
   }
 
-  ${AfterDropAreaHighlight} {
+  ${BeforeDropAreaHighlight} ,${AfterDropAreaHighlight} {
     display: none;
     position: absolute;
-    bottom: -1px;
+    z-index: 9;
+    height: 2px;
+    background: rgba(0, 0, 255, 1);
     width: calc(
       100% -
         ${({ indent, item }) =>
@@ -267,12 +312,15 @@ const Root = styled(RootComponent)`
             24 +
           12}px
     );
-    height: 2px;
-    background: rgba(0, 0, 255, 1);
     margin-left: ${({ indent, item }) =>
       (indent + (item.open && item.children && item.children.length ? 1 : 0)) *
         24 +
       12}px;
-    z-index: 9;
+  }
+  ${BeforeDropAreaHighlight} {
+    top: -1px;
+  }
+  ${AfterDropAreaHighlight} {
+    bottom: -1px;
   }
 `;
