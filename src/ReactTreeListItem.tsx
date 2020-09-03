@@ -1,44 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ReactTreeListItemType } from "./ReactTreeList";
 
 export interface ReactTreeListItemProps {
   item: ReactTreeListItemType;
   indent: number;
+  allowDropBefore?: boolean;
   onFocusEnter?(item: ReactTreeListItemType): void;
   onArrowClick?(item: ReactTreeListItemType): void;
   onDragging?(dragging: boolean): void;
-  onDragDrop?(id: string, toId: string): void;
+  onDropInside?(id: string, toId: string): void;
+  onDropBefore?(id: string, toId: string): void;
+  onDropAfter?(id: string, toId: string): void;
 }
 
 export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
   onDragging,
-  onDragDrop,
+  onDropInside,
+  onDropBefore,
+  onDropAfter,
+  allowDropBefore,
   ...props
 }) => {
   const { item } = props;
   const { label } = item;
 
+  console.log(allowDropBefore);
+
+  const RootRef = useRef<HTMLDivElement>(null);
+  const DropAreaRef = useRef<HTMLDivElement>(null);
+  const BeforeDropAreaRef = useRef<HTMLDivElement>(null);
+  const AfterDropAreaRef = useRef<HTMLDivElement>(null);
+
   const [dragging, setDragging] = useState(false);
-  const [dragOver, setDragOver] = useState(false);
+  const [isDragged, setIsDragged] = useState(false);
 
-  const onFocusKeyPress: React.HTMLAttributes<HTMLDivElement>["onKeyPress"] = (
-    event
-  ) => {
-    if (event.which === 13) {
-      onArrowClick();
+  const setDragOver = (dragOver: boolean) => {
+    if (dragOver) {
+      RootRef.current?.classList.add("dragOver");
+    } else if (RootRef.current?.classList.contains("dragOver")) {
+      RootRef.current?.classList.remove("dragOver");
     }
   };
 
-  const onArrowClick = () => {
-    if (props.onArrowClick) {
-      props.onArrowClick(item);
+  const setBeforeDropAreaDragOver = (dragOver: boolean) => {
+    if (dragOver) {
+      BeforeDropAreaRef.current?.classList.add("dragOver");
+    } else if (BeforeDropAreaRef.current?.classList.contains("dragOver")) {
+      BeforeDropAreaRef.current?.classList.remove("dragOver");
     }
   };
 
-  const onDragOver: React.HTMLAttributes<HTMLDivElement>["onDragOver"] = (
-    event
-  ) => event.preventDefault();
+  const setAfterDropAreaDragOver = (dragOver: boolean) => {
+    if (dragOver) {
+      AfterDropAreaRef.current?.classList.add("dragOver");
+    } else if (AfterDropAreaRef.current?.classList.contains("dragOver")) {
+      AfterDropAreaRef.current?.classList.remove("dragOver");
+    }
+  };
+
+  const onDrag: React.HTMLAttributes<HTMLDivElement>["onDrag"] = () => {
+    setIsDragged(true);
+  };
 
   const onDragStart: React.HTMLAttributes<HTMLDivElement>["onDragStart"] = (
     event
@@ -50,29 +73,19 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     }
   };
 
-  const onDragEnd: React.HTMLAttributes<HTMLDivElement>["onDragStart"] = (
+  const onDragEnd: React.HTMLAttributes<HTMLDivElement>["onDragEnd"] = () => {
+    onDragging && onDragging(false);
+  };
+
+  const onFocusKeyPress: React.HTMLAttributes<HTMLDivElement>["onKeyPress"] = (
     event
-  ) => onDragging && onDragging(false);
-
-  const onDrop: React.HTMLAttributes<HTMLDivElement>["onDrop"] = (event) => {
-    if (
-      event.dataTransfer.getData("itemId") !== item.id &&
-      onDragDrop &&
-      item.id
-    ) {
-      onDragDrop(event.dataTransfer.getData("itemId"), item.id);
+  ) => {
+    if (event.which === 13) {
+      onArrowClick();
     }
-
-    setDragOver(false);
   };
 
-  const onDragEnter = () => {
-    setDragOver(true);
-  };
-
-  const onDragLeave = () => {
-    setDragOver(false);
-  };
+  const onArrowClick = () => props.onArrowClick && props.onArrowClick(item);
 
   useEffect(() => {
     const dragStartHandler = () => {
@@ -80,6 +93,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     };
     const dragEndHandler = () => {
       setDragging(false);
+      setIsDragged(false);
     };
 
     document.addEventListener("dragstart", dragStartHandler);
@@ -90,65 +104,151 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     };
   }, []);
 
+  const dropArea: React.HTMLAttributes<HTMLDivElement> = {
+    onDrop: (event) => {
+      console.log("onDrop");
+      console.log(
+        event.dataTransfer.getData("itemId") !== item.id,
+        onDropInside,
+        item.id
+      );
+      if (
+        event.dataTransfer.getData("itemId") !== item.id &&
+        onDropInside &&
+        item.id
+      ) {
+        onDropInside(event.dataTransfer.getData("itemId"), item.id);
+      }
+
+      setDragOver(false);
+    },
+    onDragOver: (event) => event.preventDefault(),
+    onDragEnter: () => setDragOver(true),
+    onDragLeave: () => setDragOver(false),
+  };
+
+  const beforeDropArea: React.HTMLAttributes<HTMLDivElement> = {
+    onDrop: (event) => {
+      if (
+        event.dataTransfer.getData("itemId") !== item.id &&
+        onDropBefore &&
+        item.id
+      ) {
+        onDropBefore(event.dataTransfer.getData("itemId"), item.id);
+      }
+
+      setBeforeDropAreaDragOver(false);
+    },
+    onDragOver: (event) => event.preventDefault(),
+    onDragEnter: () => setBeforeDropAreaDragOver(true),
+    onDragLeave: () => setBeforeDropAreaDragOver(false),
+  };
+
+  const afterDropArea: React.HTMLAttributes<HTMLDivElement> = {
+    onDrop: (event) => {
+      if (
+        item.children &&
+        item.children.length &&
+        item.open &&
+        onDropInside &&
+        item.id
+      ) {
+        onDropInside(event.dataTransfer.getData("itemId"), item.id);
+      } else if (
+        event.dataTransfer.getData("itemId") !== item.id &&
+        onDropAfter &&
+        item.id
+      ) {
+        onDropAfter(event.dataTransfer.getData("itemId"), item.id);
+      }
+
+      setAfterDropAreaDragOver(false);
+    },
+    onDragOver: (event) => event.preventDefault(),
+    onDragEnter: () => setAfterDropAreaDragOver(true),
+    onDragLeave: () => setAfterDropAreaDragOver(false),
+  };
+
   return (
     <Root
+      ref={RootRef}
       {...props}
       // Custom properties
       dragging={dragging}
-      dragOver={dragOver}
-      // Native attributes
-      onDragOver={onDragOver}
+      isDragged={isDragged}
+      onDrag={onDrag}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
-      onDrop={onDrop}
       onKeyPress={onFocusKeyPress}
-      onDragEnter={onDragEnter}
-      onDragLeave={onDragLeave}
     >
       {item.arrow && <Arrow onClick={onArrowClick}>{item.arrow}</Arrow>}
       {item.icon && <Icon>{item.icon}</Icon>}
       <Label>{label}</Label>
+
+      {allowDropBefore && (
+        <React.Fragment>
+          <BeforeDropArea ref={BeforeDropAreaRef} {...beforeDropArea} />
+          <BeforeDropAreaHighlight />
+        </React.Fragment>
+      )}
+
+      <DropArea ref={DropAreaRef} {...dropArea} />
+      <AfterDropArea ref={AfterDropAreaRef} {...afterDropArea} />
+      <AfterDropAreaHighlight />
     </Root>
   );
 };
 
-const RootComponent: React.FC<
+const RootComponent = React.forwardRef<
+  HTMLDivElement,
   ReactTreeListItemProps &
     React.HTMLAttributes<HTMLDivElement> & {
+      ref?: React.RefObject<HTMLDivElement>;
       dragging?: boolean;
-      dragOver?: boolean;
+      isDragged?: boolean;
     }
-> = ({
-  indent,
-  item,
-  onFocusEnter,
-  onArrowClick,
-  dragging,
-  dragOver,
-  ...props
-}) => <div draggable={true} tabIndex={0} {...props} />;
+>(
+  (
+    { indent, item, onFocusEnter, onArrowClick, dragging, isDragged, ...props },
+    ref
+  ) => <div ref={ref} draggable={true} tabIndex={0} {...props} />
+);
 
 const Arrow = styled.div``;
 const Icon = styled.div``;
 const Label = styled.div``;
+const DropArea = styled.div``;
+const BeforeDropArea = styled.div``;
+const BeforeDropAreaHighlight = styled.div``;
+const AfterDropArea = styled.div``;
+const AfterDropAreaHighlight = styled.div``;
 const Root = styled(RootComponent)`
+  position: relative;
   display: grid;
   grid-template-columns: auto auto 1fr;
   grid-column-gap: 8px;
   padding: 4px;
   padding-left: ${({ indent }) => indent * 24 + 12}px;
   align-items: center;
+  border-radius: 4px;
 
-  transition: 100ms;
+  transition: background 100ms;
 
-  outline: ${({ dragOver }) => (dragOver ? 1 : 0)}px dashed rgba(0, 0, 0, 0.25);
+  opacity: ${({ isDragged }) => (isDragged ? 0.5 : 1)};
 
-  * {
+  &.dragOver {
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 255, 1);
+  }
+
+  ${Arrow}, ${Arrow} *,
+  ${Icon}, ${Icon} *,
+  ${Label}, ${Label} * {
     pointer-events: ${({ dragging }) => (dragging ? "none" : "")};
   }
 
   &:focus {
-    background: rgba(0, 0, 0, 0.1);
+    outline: none;
+    background: rgba(0, 0, 255, 0.075);
   }
 
   ${Arrow} {
@@ -162,5 +262,65 @@ const Root = styled(RootComponent)`
   ${Icon} {
     display: flex;
     transition: 100ms;
+  }
+
+  ${DropArea} {
+    display: ${({ dragging }) => (dragging ? "block" : "none")};
+    position: absolute;
+    top: 15%;
+    left: 0;
+    width: 100%;
+    height: 70%;
+    z-index: 10;
+  }
+
+  ${BeforeDropArea}, ${AfterDropArea} {
+    display: ${({ dragging }) => (dragging ? "block" : "none")};
+    position: absolute;
+    height: 30%;
+    width: 100%;
+    z-index: 11;
+  }
+  ${BeforeDropArea} {
+    top: 0;
+    transform: translateY(-50%);
+
+    &.dragOver + ${BeforeDropAreaHighlight} {
+      display: block;
+    }
+  }
+  ${AfterDropArea} {
+    bottom: 0;
+    transform: translateY(50%);
+
+    &.dragOver + ${AfterDropAreaHighlight} {
+      display: block;
+    }
+  }
+
+  ${BeforeDropAreaHighlight} ,${AfterDropAreaHighlight} {
+    display: none;
+    position: absolute;
+    z-index: 9;
+    height: 2px;
+    background: rgba(0, 0, 255, 1);
+    width: calc(
+      100% -
+        ${({ indent, item }) =>
+          (indent +
+            (item.open && item.children && item.children.length ? 1 : 0)) *
+            24 +
+          12}px
+    );
+    margin-left: ${({ indent, item }) =>
+      (indent + (item.open && item.children && item.children.length ? 1 : 0)) *
+        24 +
+      12}px;
+  }
+  ${BeforeDropAreaHighlight} {
+    top: -1px;
+  }
+  ${AfterDropAreaHighlight} {
+    bottom: -1px;
   }
 `;
