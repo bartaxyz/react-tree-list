@@ -10,34 +10,57 @@ export interface ReactTreeListItemType {
   id?: string;
 
   /**
-   * Custom component for arrow icon
-   */
-  arrowComponent?: React.ReactNode;
-
-  /**
-   * TODO
+   * Text or custom component to be rendered as label/content of item
    */
   label?: React.ReactNode;
 
   /**
-   * TODO
+   * TODO:
    */
   children?: ReactTreeListItemType[];
 
   /**
-   * TODO
+   * Defines whether `children` should be displayed on screen
+   *
+   * Default: `false`
    */
   open?: boolean;
 
   /**
-   * TODO
+   * Custom component that'll be rendered as an icon
    */
   icon?: React.ReactNode;
 
   /**
-   * Component that'll be rendered as arrow
+   * Custom component that'll be rendered as an arrow
+   *
+   * Default: `"▸"`
    */
   arrow?: React.ReactNode;
+
+  /**
+   * Defines whether children can or cannot be passed into the item. If `false`, this element also
+   * removes all current children. If you want to disallow only additional children but keep the
+   * current, use `allowDropInside: false` instead.
+   *
+   * Default: `true`
+   */
+  allowChildren?: boolean;
+
+  /**
+   * Defines whether content can be dropped inside an item. Children are still allowed, it's just
+   * impossible to drop any more children inside.
+   *
+   * Default: `true`
+   */
+  allowDropInside?: boolean;
+
+  /**
+   * Defines whether content can be dropped inside. Also adds a visual cue that the item is disabled.
+   *
+   * Default: `false`
+   */
+  disabled?: boolean;
 }
 
 export interface ReactTreeListProps {
@@ -55,6 +78,7 @@ export interface ReactTreeListProps {
    * Defines the default values for item object
    *
    * Eg. `itemDefaults={{ open: true }}` will make all items open by default unless specified otherwise
+   * inside each item separately.
    */
   itemDefaults?: Partial<Omit<ReactTreeListItemType, "id">>;
 }
@@ -71,11 +95,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
   const getById = (id: string): ReactTreeListItemType | undefined => {
     let item: ReactTreeListItemType | undefined;
 
-    const recursiveGetById = (
-      currentItem: ReactTreeListItemType,
-      index: number,
-      array: ReactTreeListItemType[]
-    ) => {
+    const recursiveGetById = (currentItem: ReactTreeListItemType) => {
       if (currentItem.id === id) {
         item = currentItem;
       }
@@ -85,9 +105,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       }
     };
 
-    data.forEach((oi, ass, df) => {
-      recursiveGetById(oi, ass, df);
-    });
+    data.forEach(recursiveGetById);
 
     return item;
   };
@@ -166,11 +184,63 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       if (!item.children) {
         item.children = [copyOfItem];
       } else {
-        item.children.push(copyOfItem);
+        item.children.unshift(copyOfItem);
       }
 
       onChange([...data]);
     }
+  };
+
+  const moveIdBefore = (id: string, beforeId: string) => {
+    const copyOfItem = removeByIdWithoutOnChange(id);
+    let breakRecursion = false;
+
+    if (!copyOfItem) return;
+
+    const recursiveMoveIdAfter = (
+      item: ReactTreeListItemType,
+      index: number,
+      array: ReactTreeListItemType[]
+    ) => {
+      if (breakRecursion) return;
+
+      if (item.id === beforeId) {
+        array.splice(index, 0, copyOfItem);
+        breakRecursion = true;
+      } else if (item.children) {
+        item.children.forEach(recursiveMoveIdAfter);
+      }
+    };
+
+    data.forEach(recursiveMoveIdAfter);
+
+    onChange([...data]);
+  };
+
+  const moveIdAfter = (id: string, afterId: string) => {
+    const copyOfItem = removeByIdWithoutOnChange(id);
+    let breakRecursion = false;
+
+    if (!copyOfItem) return;
+
+    const recursiveMoveIdAfter = (
+      item: ReactTreeListItemType,
+      index: number,
+      array: ReactTreeListItemType[]
+    ) => {
+      if (breakRecursion) return;
+
+      if (item.id === afterId) {
+        array.splice(index + 1, 0, copyOfItem);
+        breakRecursion = true;
+      } else if (item.children) {
+        item.children.forEach(recursiveMoveIdAfter);
+      }
+    };
+
+    data.forEach(recursiveMoveIdAfter);
+
+    onChange([...data]);
   };
 
   const renderContent = () => {
@@ -193,8 +263,11 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       listItem: ReactTreeListItemType,
       index: number,
       array: ReactTreeListItemType[],
-      parentOpen?: boolean
+      parentOpen?: boolean,
+      isFirstLoop?: boolean
     ) => {
+      const isFirstItemInFirstLoop = isFirstLoop && index === 0;
+
       if (!listItem.id) {
         triggerOnChange = true;
         array[index] = {
@@ -212,6 +285,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
             key={item.id}
             item={item}
             indent={indent}
+            allowDropBefore={isFirstItemInFirstLoop}
             onArrowClick={() => updateById(item.id, { open: !item.open })}
             onDragging={(drag) => {
               if (drag) {
@@ -221,7 +295,9 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
                 updateById(item.id, { open: lastOpenState.current });
               }
             }}
-            onDragDrop={(id, toId) => moveIdTo(id, toId)}
+            onDropInside={(id, toId) => moveIdTo(id, toId)}
+            onDropBefore={(id, beforeId) => moveIdBefore(id, beforeId)}
+            onDropAfter={(id, afterId) => moveIdAfter(id, afterId)}
           />
         );
       }
@@ -245,7 +321,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     };
 
     data.forEach((listItem, index, array) =>
-      renderItem(listItem, index, array, true)
+      renderItem(listItem, index, array, true, true)
     );
 
     if (triggerOnChange) {

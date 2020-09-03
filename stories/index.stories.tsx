@@ -341,8 +341,12 @@ export const withCustomStyles = () => {
     </svg>
   );
 
-  const divLabel = <span style={{ fontFamily: "Arial", fontSize: 12 }}>Div</span>;
-  const spanLabel = <span style={{ fontFamily: "Arial", fontSize: 12 }}>Span</span>;
+  const divLabel = (
+    <span style={{ fontFamily: "Arial", fontSize: 12 }}>Div</span>
+  );
+  const spanLabel = (
+    <span style={{ fontFamily: "Arial", fontSize: 12 }}>Span</span>
+  );
 
   const [data, setData] = useState<ReactTreeListProps["data"]>([
     {
