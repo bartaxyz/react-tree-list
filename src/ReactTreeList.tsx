@@ -1,67 +1,10 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { ReactTreeListItem } from "./ReactTreeListItem";
-import { useUniqueId } from "./utils/useUniqueId";
-
-export interface ReactTreeListItemType {
-  /**
-   * Unique identificator of item. If not present, new one will be generated.
-   */
-  id?: string;
-
-  /**
-   * Text or custom component to be rendered as label/content of item
-   */
-  label?: React.ReactNode;
-
-  /**
-   * TODO:
-   */
-  children?: ReactTreeListItemType[];
-
-  /**
-   * Defines whether `children` should be displayed on screen
-   *
-   * Default: `false`
-   */
-  open?: boolean;
-
-  /**
-   * Custom component that'll be rendered as an icon
-   */
-  icon?: React.ReactNode;
-
-  /**
-   * Custom component that'll be rendered as an arrow
-   *
-   * Default: `"▸"`
-   */
-  arrow?: React.ReactNode;
-
-  /**
-   * Defines whether children can or cannot be passed into the item. If `false`, this element also
-   * removes all current children. If you want to disallow only additional children but keep the
-   * current, use `allowDropInside: false` instead.
-   *
-   * Default: `true`
-   */
-  allowChildren?: boolean;
-
-  /**
-   * Defines whether content can be dropped inside an item. Children are still allowed, it's just
-   * impossible to drop any more children inside.
-   *
-   * Default: `true`
-   */
-  allowDropInside?: boolean;
-
-  /**
-   * Defines whether content can be dropped inside. Also adds a visual cue that the item is disabled.
-   *
-   * Default: `false`
-   */
-  disabled?: boolean;
-}
+import { useUniqueId } from "./hooks/useUniqueId";
+import { ReactTreeListItemType } from "./types/ItemTypes";
+import { useGetItemById } from "./utils/useGetItemById";
+import { useUpdateItemById } from "./utils/useUpdateItemById";
 
 export interface ReactTreeListProps {
   /**
@@ -92,56 +35,11 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
   const lastOpenState = useRef(false);
 
-  const getById = (id: string): ReactTreeListItemType | undefined => {
-    let item: ReactTreeListItemType | undefined;
-
-    const recursiveGetById = (currentItem: ReactTreeListItemType) => {
-      if (currentItem.id === id) {
-        item = currentItem;
-      }
-
-      if (currentItem.children) {
-        currentItem.children.forEach(recursiveGetById);
-      }
-    };
-
-    data.forEach(recursiveGetById);
-
-    return item;
-  };
-
-  const updateById = (
-    updateId: string | undefined,
-    updateData: Partial<ReactTreeListItemType>
-  ) => {
-    if (!updateId) {
-      return;
-    }
-
-    let breakUpdateId = false;
-
-    const recursiveUpdateId = (
-      item: ReactTreeListItemType,
-      index: number,
-      array: ReactTreeListItemType[]
-    ) => {
-      if (breakUpdateId) return;
-
-      if (item.id === updateId) {
-        array[index] = { ...item, ...updateData };
-        breakUpdateId = true;
-        return;
-      }
-
-      if (item.children) {
-        item.children.forEach(recursiveUpdateId);
-      }
-    };
-
-    data.forEach(recursiveUpdateId);
-
-    onChange([...data]);
-  };
+  const getItemById = useGetItemById<ReactTreeListItemType>(data);
+  const updateItemById = useUpdateItemById<ReactTreeListItemType>(
+    data,
+    onChange
+  );
 
   const removeByIdWithoutOnChange = (
     id: string
@@ -176,7 +74,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
     if (!copyOfItem) return;
 
-    const item = getById(toId);
+    const item = getItemById(toId);
 
     if (item) {
       item.open = true;
@@ -270,11 +168,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
       if (!listItem.id) {
         triggerOnChange = true;
-        array[index] = {
-          ...itemDefaults,
-          ...listItem,
-          id: generateUniqueId(),
-        };
+        array[index].id = generateUniqueId();
       }
 
       const item = array[index];
@@ -283,16 +177,16 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
         children.push(
           <ReactTreeListItem
             key={item.id}
-            item={item}
+            item={{ ...itemDefaults, ...item }}
             indent={indent}
             allowDropBefore={isFirstItemInFirstLoop}
-            onArrowClick={() => updateById(item.id, { open: !item.open })}
+            onArrowClick={() => updateItemById(item.id, { open: !item.open })}
             onDragging={(drag) => {
               if (drag) {
                 lastOpenState.current = !!item.open;
-                updateById(item.id, { open: false });
+                updateItemById(item.id, { open: false });
               } else {
-                updateById(item.id, { open: lastOpenState.current });
+                updateItemById(item.id, { open: lastOpenState.current });
               }
             }}
             onDropInside={(id, toId) => moveIdTo(id, toId)}
