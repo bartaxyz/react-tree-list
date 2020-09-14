@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import { ReactTreeListItemType } from "./ReactTreeList";
+import { ReactTreeListItemType } from "./types/ItemTypes";
 
 export interface ReactTreeListItemProps {
   item: ReactTreeListItemType;
@@ -24,8 +24,6 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
 }) => {
   const { item } = props;
   const { label } = item;
-
-  console.log(allowDropBefore);
 
   const RootRef = useRef<HTMLDivElement>(null);
   const DropAreaRef = useRef<HTMLDivElement>(null);
@@ -60,7 +58,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
   };
 
   const onDrag: React.HTMLAttributes<HTMLDivElement>["onDrag"] = () => {
-    setIsDragged(true);
+    // setIsDragged(true);
   };
 
   const onDragStart: React.HTMLAttributes<HTMLDivElement>["onDragStart"] = (
@@ -106,12 +104,6 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
 
   const dropArea: React.HTMLAttributes<HTMLDivElement> = {
     onDrop: (event) => {
-      console.log("onDrop");
-      console.log(
-        event.dataTransfer.getData("itemId") !== item.id,
-        onDropInside,
-        item.id
-      );
       if (
         event.dataTransfer.getData("itemId") !== item.id &&
         onDropInside &&

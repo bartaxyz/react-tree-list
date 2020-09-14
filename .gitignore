@@ -4,3 +4,7 @@ build
 
 # Storybook output
 .out
+
+# Test output
+.nyc_output
+coverage
