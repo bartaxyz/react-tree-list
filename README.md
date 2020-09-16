@@ -73,8 +73,8 @@ const Component = () => {
 
 ### [See Advanced Examples](bartaxyz.github.io/react-tree-list)
 
-## Author
+## License
+React Tree List is licensed under the MIT License.
 
-**Ondřej Bárta**
-
-Twitter: [@bartaxyz](https://www.twitter.com/bartaxyz)
+## Authors
+Ondřej Bárta · [website](https://www.ondrejbarta.xyz) · [twitter](https://twitter.com/bartaxyz)
