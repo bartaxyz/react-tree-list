@@ -1,9 +1,41 @@
 import React, { useState } from "react";
+import { Meta } from "@storybook/react";
+import {
+  Title,
+  Subtitle,
+  Description,
+  Primary,
+  Props,
+  Stories,
+  PRIMARY_STORY,
+} from "@storybook/addon-docs/blocks";
+import { withInfo } from "@storybook/addon-info";
 
 import { ReactTreeList, ReactTreeListProps } from "../src";
 import { getRandomEmoji } from "./utils/getRandomEmoji";
 
-export default { title: "Tree List" };
+export default {
+  title: "Tree List",
+  component: ReactTreeList,
+  decorators: [withInfo],
+  parameters: {
+    docs: {
+      page: () => (
+        <>
+          <Title />
+          <Subtitle />
+          <Description />
+          <Primary />
+          {/* <ArgsTable story={PRIMARY_STORY} /> */}
+          <Stories />
+        </>
+      ),
+    },
+  },
+  argTypes: {
+    label: { control: "text" },
+  },
+} as Meta;
 
 export const withEmojis = () => {
   const [data, setData] = useState<ReactTreeListProps["data"]>([
