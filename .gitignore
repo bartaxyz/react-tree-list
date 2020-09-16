@@ -8,3 +8,4 @@ build
 # Test output
 .nyc_output
 coverage
+.DS_Store
