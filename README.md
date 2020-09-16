@@ -4,7 +4,8 @@
 
 A draggable & sortable tree list UI component for React.
 
-![React Tree List Component Showcase](assets/react-tree-list-showcase.gif)
+| <img src="assets/react-tree-list-showcase.gif" alt="React Tree List Component Showcase" width="400" height="318" /> |
+| --- |
 
 [Demo](bartaxyz.github.io/react-tree-list/) &middot; [See Features](https://github.com/bartaxyz/react-tree-list/projects)
 
