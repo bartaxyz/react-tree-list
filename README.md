@@ -7,7 +7,7 @@ A draggable & sortable tree list UI component for React.
 | <img src="assets/react-tree-list-showcase.gif" alt="React Tree List Component Showcase" width="400" height="318" /> |
 | --- |
 
-[Demo](bartaxyz.github.io/react-tree-list/) &nbsp;&middot;&nbsp; [See Features](https://github.com/bartaxyz/react-tree-list/projects) &nbsp;&middot;&nbsp; [Request Feature](https://github.com/bartaxyz/react-tree-list/issues)
+[Demo](https://bartaxyz.github.io/react-tree-list/) &nbsp;&middot;&nbsp; [See Features](https://github.com/bartaxyz/react-tree-list/projects) &nbsp;&middot;&nbsp; [Request Feature](https://github.com/bartaxyz/react-tree-list/issues)
 
 ## Usage
 
@@ -71,7 +71,7 @@ const Component = () => {
 }
 ```
 
-### [See Advanced Examples](bartaxyz.github.io/react-tree-list)
+### [See Advanced Examples](https://bartaxyz.github.io/react-tree-list)
 
 ## License
 React Tree List is licensed under the MIT License.
