@@ -41,6 +41,12 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     onChange
   );
 
+  /**
+   * To make sure the event runs only once, we store in this variable
+   * whether the event should run.
+   */
+  let triggerOnChange = false;
+
   const removeByIdWithoutOnChange = (
     id: string
   ): ReactTreeListItemType | undefined => {
@@ -151,11 +157,6 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
      * A counter for the indentation of items
      */
     let indent = 0;
-    /**
-     * To make sure the event runs only once, we store in this variable
-     * whether the event should run.
-     */
-    let triggerOnChange = false;
 
     const renderItem = (
       listItem: ReactTreeListItemType,
