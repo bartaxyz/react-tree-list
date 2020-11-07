@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ReactTreeListItem } from "./ReactTreeListItem";
 import { useUniqueId } from "./hooks/useUniqueId";
@@ -40,6 +40,12 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     data,
     onChange
   );
+
+  /**
+   * To make sure the event runs only once, we store in this variable
+   * whether the event should run.
+   */
+  let triggerOnChange = false;
 
   const removeByIdWithoutOnChange = (
     id: string
@@ -85,7 +91,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
         item.children.unshift(copyOfItem);
       }
 
-      onChange([...data]);
+      triggerOnChange = true;
     }
   };
 
@@ -112,7 +118,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
     data.forEach(recursiveMoveIdAfter);
 
-    onChange([...data]);
+    triggerOnChange = true;
   };
 
   const moveIdAfter = (id: string, afterId: string) => {
@@ -138,7 +144,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
     data.forEach(recursiveMoveIdAfter);
 
-    onChange([...data]);
+    triggerOnChange = true;
   };
 
   const renderContent = () => {
@@ -151,11 +157,6 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
      * A counter for the indentation of items
      */
     let indent = 0;
-    /**
-     * To make sure the event runs only once, we store in this variable
-     * whether the event should run.
-     */
-    let triggerOnChange = false;
 
     const renderItem = (
       listItem: ReactTreeListItemType,
@@ -218,12 +219,14 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       renderItem(listItem, index, array, true, true)
     );
 
+    return children;
+  };
+
+  useEffect(() => {
     if (triggerOnChange) {
       onChange([...data]);
     }
-
-    return children;
-  };
+  }, [triggerOnChange]);
 
   return <Root>{renderContent()}</Root>;
 };
