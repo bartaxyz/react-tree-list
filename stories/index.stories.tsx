@@ -5,9 +5,7 @@ import {
   Subtitle,
   Description,
   Primary,
-  Props,
   Stories,
-  PRIMARY_STORY,
 } from "@storybook/addon-docs/blocks";
 import { withInfo } from "@storybook/addon-info";
 
@@ -26,7 +24,6 @@ export default {
           <Subtitle />
           <Description />
           <Primary />
-          {/* <ArgsTable story={PRIMARY_STORY} /> */}
           <Stories />
         </>
       ),
