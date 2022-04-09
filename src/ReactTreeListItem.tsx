@@ -256,7 +256,7 @@ const Root = styled(RootComponent)`
   grid-column-gap: 8px;
   padding: 4px;
   padding-left: ${({ indent }) => indent * 24 + 12}px;
-  align-items: center
+  align-items: center;
   border-radius: ${({ options }) => options.focusedBorderRadius ?? 4}px;
 
   transition: background 100ms;
