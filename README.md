@@ -71,6 +71,30 @@ const Component = () => {
 }
 ```
 
+### Simple Style Customisation
+
+There's a limited possibility to adjust the styles (background color, outline color, border radius, etc.) of the focused items using the `itemOptions` property.
+
+```tsx
+const Component = () => {
+  ... 
+  
+  return (
+    <ReactTreeList
+      ...
+      itemOptions={{
+        focusedOutlineColor: "rgba(255, 0, 0, 0.5)",
+        focusedOutlineWidth: 1,
+        focusedBorderRadius: 50,
+        focusedBackgroundColor: "rgba(255, 0, 0, 0.1)",
+      }}
+    />
+  );
+}
+```
+
+[Storybook - Tree List With Custom Styles](https://bartaxyz.github.io/react-tree-list/?path=/story/tree-list--with-custom-styles)
+
 ### [See Advanced Examples](https://bartaxyz.github.io/react-tree-list)
 
 ## License
