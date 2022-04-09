@@ -11,6 +11,7 @@ import { withInfo } from "@storybook/addon-info";
 
 import { ReactTreeList, ReactTreeListProps } from "../src";
 import { getRandomEmoji } from "./utils/getRandomEmoji";
+import { rgba } from "polished";
 
 export default {
   title: "Tree List",
@@ -416,6 +417,12 @@ export const withCustomStyles = () => {
     <ReactTreeList
       data={data}
       onChange={setData}
+      itemOptions={{
+        focusedOutlineColor: rgba("red", 0.5),
+        focusedOutlineWidth: 1,
+        focusedOutlineBorderRadius: 50,
+        focusedBackgroundColor: rgba("red", 0.1),
+      }}
       itemDefaults={{
         open: false,
         arrow: (
