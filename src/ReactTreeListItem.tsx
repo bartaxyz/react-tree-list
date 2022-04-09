@@ -15,9 +15,9 @@ export interface ItemOptions {
   focusedOutlineWidth?: number;
 
   /**
-   * Border radius of the focused item outline
+   * Border radius of the focused item
    */
-  focusedOutlineBorderRadius?: number;
+  focusedBorderRadius?: number;
 
   /**
    * Background color of the focused item
@@ -256,8 +256,8 @@ const Root = styled(RootComponent)`
   grid-column-gap: 8px;
   padding: 4px;
   padding-left: ${({ indent }) => indent * 24 + 12}px;
-  align-items: center;
-  border-radius: ${({ options }) => options.focusedOutlineBorderRadius ?? 4}px;
+  align-items: center
+  border-radius: ${({ options }) => options.focusedBorderRadius ?? 4}px;
 
   transition: background 100ms;
 

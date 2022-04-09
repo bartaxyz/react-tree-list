@@ -420,7 +420,7 @@ export const withCustomStyles = () => {
       itemOptions={{
         focusedOutlineColor: rgba("red", 0.5),
         focusedOutlineWidth: 1,
-        focusedOutlineBorderRadius: 50,
+        focusedBorderRadius: 50,
         focusedBackgroundColor: rgba("red", 0.1),
       }}
       itemDefaults={{
