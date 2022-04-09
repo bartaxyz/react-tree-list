@@ -21,7 +21,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
-    "types": ["react", "jest"]
+    "types": ["react", "jest"],
+    "skipLibCheck": true,
   },
   "include": ["src", "index.ts", "__tests__"],
   "exclude": ["node_modules", "jest.config.js", "stories"]
