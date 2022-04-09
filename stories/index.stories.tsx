@@ -8,10 +8,10 @@ import {
   Stories,
 } from "@storybook/addon-docs/blocks";
 import { withInfo } from "@storybook/addon-info";
+import { rgba } from "polished";
 
 import { ReactTreeList, ReactTreeListProps } from "../src";
 import { getRandomEmoji } from "./utils/getRandomEmoji";
-import { rgba } from "polished";
 
 export default {
   title: "Tree List",
