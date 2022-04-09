@@ -83,10 +83,10 @@ const Component = () => {
     <ReactTreeList
       ...
       itemOptions={{
-        focusedOutlineColor: rgba("red", 0.5),
+        focusedOutlineColor: "rgba(255, 0, 0, 0.5)",
         focusedOutlineWidth: 1,
         focusedBorderRadius: 50,
-        focusedBackgroundColor: rgba("red", 0.1),
+        focusedBackgroundColor: "rgba(255, 0, 0, 0.1)",
       }}
     />
   );
