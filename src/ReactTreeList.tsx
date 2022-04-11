@@ -17,7 +17,7 @@ export interface ReactTreeListProps {
    */
   onChange(data: ReactTreeListItemType[]): void;
 
-  onSelected(item: ReactTreeListItemType): void;
+  onSelected?(item: ReactTreeListItemType): void;
 
   /**
    * Defines the default values for item object
