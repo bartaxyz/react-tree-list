@@ -70,11 +70,11 @@ const Component = () => {
 
   return (
     <ReactTreeList
-      selectedKey={"1"}
       data={data}
       onChange={onTreeListChange}
-      onSelected={onTreeListSelected}
       itemDefaults={{ open: false, arrow: "▸" }}
+      selectedId="1"
+      onSelected={onTreeListSelected}
     />
   );
 };

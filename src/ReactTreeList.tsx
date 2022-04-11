@@ -11,12 +11,20 @@ export interface ReactTreeListProps {
    * The data to display in the list.
    */
   data: ReactTreeListItemType[];
-  selectedKey?: string | "";
+
   /**
    * Function that is triggered when data changes
    */
   onChange(data: ReactTreeListItemType[]): void;
 
+  /**
+   * The ID of the selected item
+   */
+  selectedId?: string | "";
+
+  /**
+   * Function that is triggered when an item is selected
+   */
   onSelected?(item: ReactTreeListItemType): void;
 
   /**
@@ -35,7 +43,7 @@ export interface ReactTreeListProps {
 
 export const ReactTreeList: React.FC<ReactTreeListProps> = ({
   data,
-  selectedKey,
+  selectedId,
   onChange,
   onSelected,
   itemDefaults,
@@ -51,7 +59,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     onChange
   );
 
-  const [currentSelectedKey, setCurrentSelectedKey] = useState(selectedKey);
+  const [currentSelectedId, setCurrentSelectedId] = useState(selectedId);
 
   const updateSelectedItemById =
     useUpdateSelectedItemById<ReactTreeListItemType>(data);
@@ -94,7 +102,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
   const selectedNode = (item: ReactTreeListItemType) => {
     selectedOnChange = true;
-    setCurrentSelectedKey(item.id || "");
+    setCurrentSelectedId(item.id || "");
 
     if (onSelected) {
       onSelected(item);
@@ -203,7 +211,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
         children.push(
           <ReactTreeListItem
             key={item.id}
-            selectedKey={currentSelectedKey || ""}
+            selectedId={currentSelectedId || ""}
             item={{ ...itemDefaults, ...item }}
             options={itemOptions}
             indent={indent}

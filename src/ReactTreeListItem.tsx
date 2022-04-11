@@ -29,7 +29,7 @@ const DEFAULT_COLOR = rgba(0, 0, 255, 1);
 
 export interface ReactTreeListItemProps {
   item: ReactTreeListItemType;
-  selectedKey: string;
+  selectedId: string;
   indent: number;
   allowDropBefore?: boolean;
   onSelected?(item: ReactTreeListItemType): void;
@@ -246,7 +246,7 @@ const RootComponent = React.forwardRef<
   (
     {
       indent,
-      selectedKey,
+      selectedId,
       item,
       onFocusEnter,
       onSelected,
@@ -275,11 +275,11 @@ const Root = styled(RootComponent)`
   padding: 4px;
   padding-left: ${({ indent }) => indent * 24 + 12}px;
   align-items: center;
-  border-radius: 4px;
+  border-radius: ${({ options }) => options.focusedBorderRadius ?? 4}px;
   transition: background 100ms;
-  background-color: ${({ item, selectedKey }) =>
-    item.selected || selectedKey === item.id
-      ? "rgba(0, 0, 255, 0.075)"
+  background-color: ${({ item, selectedId, options }) =>
+    item.selected || selectedId === item.id
+      ? options.focusedBackgroundColor ?? rgba(DEFAULT_COLOR, 0.075)
       : "transparent"};
 
   opacity: ${({ isDragged }) => (isDragged ? 0.5 : 1)};
@@ -295,11 +295,6 @@ const Root = styled(RootComponent)`
   ${Label}, ${Label} * {
     pointer-events: ${({ dragging }) => (dragging ? "none" : "")};
   }
-
-  //&:focus {
-  //  outline: none;
-  //  background: rgba(0, 0, 255, 0.075);
-  //}
 
   ${Arrow} {
     display: flex;

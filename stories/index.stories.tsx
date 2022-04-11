@@ -7,7 +7,6 @@ import {
   Primary,
   Stories,
 } from "@storybook/addon-docs/blocks";
-import { withInfo } from "@storybook/addon-info";
 import { rgba } from "polished";
 
 import { ReactTreeList, ReactTreeListProps } from "../src";
@@ -16,7 +15,6 @@ import { getRandomEmoji } from "./utils/getRandomEmoji";
 export default {
   title: "Tree List",
   component: ReactTreeList,
-  decorators: [withInfo],
   parameters: {
     docs: {
       page: () => (
@@ -36,8 +34,9 @@ export default {
 } as Meta;
 
 export const withEmojis = () => {
-  const [selectedNode, setSelectedNode] =
-    useState<ReactTreeListProps["selectedKey"]>("");
+  const [selectedId, setSelectedId] =
+    useState<ReactTreeListProps["selectedId"]>("");
+
   const [data, setData] = useState<ReactTreeListProps["data"]>([
     {
       id: "1",
@@ -331,9 +330,9 @@ export const withEmojis = () => {
   return (
     <ReactTreeList
       data={data}
-      selectedKey={"2"}
+      selectedId={selectedId}
       onSelected={(item) => {
-        setSelectedNode(item.id || "");
+        setSelectedId(item.id ?? undefined);
       }}
       onChange={setData}
       itemDefaults={{ open: false, arrow: "▸", icon: getRandomEmoji() }}
@@ -386,8 +385,8 @@ export const withCustomStyles = () => {
   const spanLabel = (
     <span style={{ fontFamily: "Arial", fontSize: 12 }}>Span</span>
   );
-  const [selectedNode, setSelectedNode] =
-    useState<ReactTreeListProps["selectedKey"]>("");
+  const [selectedId, setSelectedId] =
+    useState<ReactTreeListProps["selectedId"]>("");
 
   const [data, setData] = useState<ReactTreeListProps["data"]>([
     {
@@ -427,9 +426,9 @@ export const withCustomStyles = () => {
   return (
     <ReactTreeList
       data={data}
-      selectedKey={""}
+      selectedId={selectedId}
       onSelected={(item) => {
-        setSelectedNode(item.id || "");
+        setSelectedId(item.id ?? undefined);
       }}
       onChange={setData}
       itemOptions={{
