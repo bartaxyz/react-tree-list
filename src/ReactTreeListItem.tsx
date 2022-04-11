@@ -4,8 +4,10 @@ import { ReactTreeListItemType } from "./types/ItemTypes";
 
 export interface ReactTreeListItemProps {
   item: ReactTreeListItemType;
+  selectedKey: string;
   indent: number;
   allowDropBefore?: boolean;
+  onSelected?(item: ReactTreeListItemType):void;
   onFocusEnter?(item: ReactTreeListItemType): void;
   onArrowClick?(item: ReactTreeListItemType): void;
   onDragging?(dragging: boolean): void;
@@ -24,7 +26,6 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
 }) => {
   const { item } = props;
   const { label } = item;
-
   const RootRef = useRef<HTMLDivElement>(null);
   const DropAreaRef = useRef<HTMLDivElement>(null);
   const BeforeDropAreaRef = useRef<HTMLDivElement>(null);
@@ -84,6 +85,8 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
   };
 
   const onArrowClick = () => props.onArrowClick && props.onArrowClick(item);
+
+  const onSelected = () => props.onSelected && props.onSelected(item);
 
   useEffect(() => {
     const dragStartHandler = () => {
@@ -161,6 +164,10 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     onDragLeave: () => setAfterDropAreaDragOver(false),
   };
 
+const onClick : React.HTMLAttributes<HTMLDivElement>["onClick"] = (event) =>    {
+  onSelected()
+}
+
   return (
     <Root
       ref={RootRef}
@@ -168,12 +175,16 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
       // Custom properties
       dragging={dragging}
       isDragged={isDragged}
+      onClick={onClick}
       onDrag={onDrag}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onKeyPress={onFocusKeyPress}
     >
-      {item.arrow && <Arrow onClick={onArrowClick}>{item.arrow}</Arrow>}
+      {item.arrow && <Arrow onClick={(event => {
+        event.stopPropagation()
+        onArrowClick()
+      })}>{item.arrow}</Arrow>}
       {item.icon && <Icon>{item.icon}</Icon>}
       <Label>{label}</Label>
 
@@ -201,7 +212,7 @@ const RootComponent = React.forwardRef<
     }
 >(
   (
-    { indent, item, onFocusEnter, onArrowClick, dragging, isDragged, ...props },
+    { indent,selectedKey, item, onFocusEnter,onSelected, onArrowClick, dragging, isDragged, ...props },
     ref
   ) => <div ref={ref} draggable={true} tabIndex={0} {...props} />
 );
@@ -223,8 +234,8 @@ const Root = styled(RootComponent)`
   padding-left: ${({ indent }) => indent * 24 + 12}px;
   align-items: center;
   border-radius: 4px;
-
   transition: background 100ms;
+  background-color: ${({ item,selectedKey }) => (item.selected || selectedKey === item.id? "rgba(0, 0, 255, 0.075)": "transparent")};
 
   opacity: ${({ isDragged }) => (isDragged ? 0.5 : 1)};
 
@@ -238,10 +249,10 @@ const Root = styled(RootComponent)`
     pointer-events: ${({ dragging }) => (dragging ? "none" : "")};
   }
 
-  &:focus {
-    outline: none;
-    background: rgba(0, 0, 255, 0.075);
-  }
+  //&:focus {
+  //  outline: none;
+  //  background: rgba(0, 0, 255, 0.075);
+  //}
 
   ${Arrow} {
     display: flex;

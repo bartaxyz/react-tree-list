@@ -1,21 +1,23 @@
-import React, { useEffect, useRef } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
 import { ReactTreeListItem } from "./ReactTreeListItem";
 import { useUniqueId } from "./hooks/useUniqueId";
 import { ReactTreeListItemType } from "./types/ItemTypes";
 import { useGetItemById } from "./utils/useGetItemById";
 import { useUpdateItemById } from "./utils/useUpdateItemById";
-
+import {useUpdateSelectedItemById} from './utils/useUpdateSelectedItemById'
 export interface ReactTreeListProps {
   /**
    * TODO: Make a good documentation for this
    */
   data: ReactTreeListItemType[];
-
+  selectedKey?: string | '';
   /**
    * TODO: Make a good documentation for this
    */
   onChange(data: ReactTreeListItemType[]): void;
+
+  onSelected(item: ReactTreeListItemType): void;
 
   /**
    * Defines the default values for item object
@@ -28,7 +30,9 @@ export interface ReactTreeListProps {
 
 export const ReactTreeList: React.FC<ReactTreeListProps> = ({
   data,
+  selectedKey,
   onChange,
+  onSelected,
   itemDefaults,
 }) => {
   const { generate: generateUniqueId } = useUniqueId();
@@ -41,11 +45,19 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     onChange
   );
 
+  const [currentSelectedKey , setCurrentSelectedKey] = useState(selectedKey)
+
+  const updateSelectedItemById = useUpdateSelectedItemById<ReactTreeListItemType>(
+      data
+  );
+
   /**
    * To make sure the event runs only once, we store in this variable
    * whether the event should run.
    */
   let triggerOnChange = false;
+
+  let selectedOnChange = false;
 
   const removeByIdWithoutOnChange = (
     id: string
@@ -74,6 +86,15 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
     return returnItem;
   };
+
+  const selectedNode = (item: ReactTreeListItemType) => {
+    selectedOnChange = true
+    setCurrentSelectedKey(item.id || '')
+
+    if(onSelected){
+      onSelected(item)
+    }
+  }
 
   const moveIdTo = (id: string, toId: string) => {
     const copyOfItem = removeByIdWithoutOnChange(id);
@@ -157,7 +178,6 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
      * A counter for the indentation of items
      */
     let indent = 0;
-
     const renderItem = (
       listItem: ReactTreeListItemType,
       index: number,
@@ -178,9 +198,14 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
         children.push(
           <ReactTreeListItem
             key={item.id}
+            selectedKey={currentSelectedKey || ''}
             item={{ ...itemDefaults, ...item }}
             indent={indent}
             allowDropBefore={isFirstItemInFirstLoop}
+            onSelected ={()=>{
+              updateSelectedItemById(item.id)
+              selectedNode(item)
+            }}
             onArrowClick={() => updateItemById(item.id, { open: !item.open })}
             onDragging={(drag) => {
               if (drag) {
