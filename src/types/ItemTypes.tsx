@@ -8,6 +8,12 @@ export interface BaseItemType {
 }
 
 export interface ReactTreeListItemType extends BaseItemType {
+
+  id?: string;
+  /**
+   * set tree node could be selected
+   */
+  selected?: boolean;
   /**
    * Text or custom component to be rendered as label/content of item
    */
