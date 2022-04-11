@@ -1,6 +1,31 @@
+import { rgba } from "polished";
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ReactTreeListItemType } from "./types/ItemTypes";
+
+export interface ItemOptions {
+  /**
+   * Color of the focused item outline & on the drop area outline
+   */
+  focusedOutlineColor?: string;
+
+  /**
+   * Width of the focused item outline & of the drop area outline
+   */
+  focusedOutlineWidth?: number;
+
+  /**
+   * Border radius of the focused item
+   */
+  focusedBorderRadius?: number;
+
+  /**
+   * Background color of the focused item
+   */
+  focusedBackgroundColor?: string;
+}
+
+const DEFAULT_COLOR = rgba(0, 0, 255, 1);
 
 export interface ReactTreeListItemProps {
   item: ReactTreeListItemType;
@@ -14,6 +39,7 @@ export interface ReactTreeListItemProps {
   onDropInside?(id: string, toId: string): void;
   onDropBefore?(id: string, toId: string): void;
   onDropAfter?(id: string, toId: string): void;
+  options: ItemOptions;
 }
 
 export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
@@ -240,7 +266,9 @@ const Root = styled(RootComponent)`
   opacity: ${({ isDragged }) => (isDragged ? 0.5 : 1)};
 
   &.dragOver {
-    box-shadow: inset 0 0 0 2px rgba(0, 0, 255, 1);
+    box-shadow: inset 0 0 0
+      ${({ options }) => options.focusedOutlineWidth ?? 2}px
+      ${({ options }) => options.focusedOutlineColor ?? DEFAULT_COLOR};
   }
 
   ${Arrow}, ${Arrow} *,
@@ -253,6 +281,7 @@ const Root = styled(RootComponent)`
   //  outline: none;
   //  background: rgba(0, 0, 255, 0.075);
   //}
+
 
   ${Arrow} {
     display: flex;
@@ -305,8 +334,9 @@ const Root = styled(RootComponent)`
     display: none;
     position: absolute;
     z-index: 9;
-    height: 2px;
-    background: rgba(0, 0, 255, 1);
+    height: ${({ options }) => options.focusedOutlineWidth ?? 2}px;
+    background: ${({ options }) =>
+      options.focusedOutlineColor ?? DEFAULT_COLOR};
     width: calc(
       100% -
         ${({ indent, item }) =>

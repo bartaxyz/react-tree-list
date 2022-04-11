@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import styled from "styled-components";
-import { ReactTreeListItem } from "./ReactTreeListItem";
+import { ItemOptions, ReactTreeListItem } from "./ReactTreeListItem";
 import { useUniqueId } from "./hooks/useUniqueId";
 import { ReactTreeListItemType } from "./types/ItemTypes";
 import { useGetItemById } from "./utils/useGetItemById";
@@ -8,12 +8,12 @@ import { useUpdateItemById } from "./utils/useUpdateItemById";
 import {useUpdateSelectedItemById} from './utils/useUpdateSelectedItemById'
 export interface ReactTreeListProps {
   /**
-   * TODO: Make a good documentation for this
+   * The data to display in the list.
    */
   data: ReactTreeListItemType[];
   selectedKey?: string | '';
   /**
-   * TODO: Make a good documentation for this
+   * Function that is triggered when data changes
    */
   onChange(data: ReactTreeListItemType[]): void;
 
@@ -26,6 +26,11 @@ export interface ReactTreeListProps {
    * inside each item separately.
    */
   itemDefaults?: Partial<Omit<ReactTreeListItemType, "id">>;
+
+  /**
+   * Options for the items
+   */
+  itemOptions?: ItemOptions;
 }
 
 export const ReactTreeList: React.FC<ReactTreeListProps> = ({
@@ -34,6 +39,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
   onChange,
   onSelected,
   itemDefaults,
+  itemOptions = {},
 }) => {
   const { generate: generateUniqueId } = useUniqueId();
 
@@ -200,6 +206,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
             key={item.id}
             selectedKey={currentSelectedKey || ''}
             item={{ ...itemDefaults, ...item }}
+            options={itemOptions}
             indent={indent}
             allowDropBefore={isFirstItemInFirstLoop}
             onSelected ={()=>{
