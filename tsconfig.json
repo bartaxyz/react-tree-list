@@ -22,7 +22,7 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "types": ["react", "jest"],
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "include": ["src", "index.ts", "__tests__"],
   "exclude": ["node_modules", "jest.config.js", "stories"]
