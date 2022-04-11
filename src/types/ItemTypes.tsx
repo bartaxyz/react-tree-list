@@ -8,7 +8,6 @@ export interface BaseItemType {
 }
 
 export interface ReactTreeListItemType extends BaseItemType {
-
   id?: string;
   /**
    * set tree node could be selected

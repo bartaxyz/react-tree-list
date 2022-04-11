@@ -32,7 +32,7 @@ export interface ReactTreeListItemProps {
   selectedKey: string;
   indent: number;
   allowDropBefore?: boolean;
-  onSelected?(item: ReactTreeListItemType):void;
+  onSelected?(item: ReactTreeListItemType): void;
   onFocusEnter?(item: ReactTreeListItemType): void;
   onArrowClick?(item: ReactTreeListItemType): void;
   onDragging?(dragging: boolean): void;
@@ -190,9 +190,9 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     onDragLeave: () => setAfterDropAreaDragOver(false),
   };
 
-const onClick : React.HTMLAttributes<HTMLDivElement>["onClick"] = (event) =>    {
-  onSelected()
-}
+  const onClick: React.HTMLAttributes<HTMLDivElement>["onClick"] = (event) => {
+    onSelected();
+  };
 
   return (
     <Root
@@ -207,10 +207,16 @@ const onClick : React.HTMLAttributes<HTMLDivElement>["onClick"] = (event) =>    
       onDragEnd={onDragEnd}
       onKeyPress={onFocusKeyPress}
     >
-      {item.arrow && <Arrow onClick={(event => {
-        event.stopPropagation()
-        onArrowClick()
-      })}>{item.arrow}</Arrow>}
+      {item.arrow && (
+        <Arrow
+          onClick={(event) => {
+            event.stopPropagation();
+            onArrowClick();
+          }}
+        >
+          {item.arrow}
+        </Arrow>
+      )}
       {item.icon && <Icon>{item.icon}</Icon>}
       <Label>{label}</Label>
 
@@ -238,7 +244,17 @@ const RootComponent = React.forwardRef<
     }
 >(
   (
-    { indent,selectedKey, item, onFocusEnter,onSelected, onArrowClick, dragging, isDragged, ...props },
+    {
+      indent,
+      selectedKey,
+      item,
+      onFocusEnter,
+      onSelected,
+      onArrowClick,
+      dragging,
+      isDragged,
+      ...props
+    },
     ref
   ) => <div ref={ref} draggable={true} tabIndex={0} {...props} />
 );
@@ -261,7 +277,10 @@ const Root = styled(RootComponent)`
   align-items: center;
   border-radius: 4px;
   transition: background 100ms;
-  background-color: ${({ item,selectedKey }) => (item.selected || selectedKey === item.id? "rgba(0, 0, 255, 0.075)": "transparent")};
+  background-color: ${({ item, selectedKey }) =>
+    item.selected || selectedKey === item.id
+      ? "rgba(0, 0, 255, 0.075)"
+      : "transparent"};
 
   opacity: ${({ isDragged }) => (isDragged ? 0.5 : 1)};
 
@@ -281,7 +300,6 @@ const Root = styled(RootComponent)`
   //  outline: none;
   //  background: rgba(0, 0, 255, 0.075);
   //}
-
 
   ${Arrow} {
     display: flex;
