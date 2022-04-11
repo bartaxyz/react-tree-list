@@ -113,3 +113,7 @@ React Tree List is licensed under the MIT License.
 ## Authors
 
 Ondřej Bárta · [website](https://www.ondrejbarta.xyz) · [twitter](https://twitter.com/bartaxyz)
+
+## Contributors
+
+张威 (zhangwei900808) · [GitHub](https://github.com/zhangwei900808)
