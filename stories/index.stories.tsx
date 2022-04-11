@@ -36,16 +36,17 @@ export default {
 } as Meta;
 
 export const withEmojis = () => {
-  const [selectedNode, setSelectedNode] = useState<ReactTreeListProps["selectedKey"]>('')
+  const [selectedNode, setSelectedNode] =
+    useState<ReactTreeListProps["selectedKey"]>("");
   const [data, setData] = useState<ReactTreeListProps["data"]>([
     {
-      id: '1',
+      id: "1",
       label: "none",
       open: true,
       icon: getRandomEmoji(),
       children: [
         {
-          id: '2',
+          id: "2",
           label: "Heyo",
           open: true,
           icon: getRandomEmoji(),
@@ -58,7 +59,7 @@ export const withEmojis = () => {
           ],
         },
         {
-          id: '3',
+          id: "3",
           label: "Heyo",
           icon: getRandomEmoji(),
           children: [
@@ -330,9 +331,9 @@ export const withEmojis = () => {
   return (
     <ReactTreeList
       data={data}
-      selectedKey={'2'}
+      selectedKey={"2"}
       onSelected={(item) => {
-        setSelectedNode(item.id || '')
+        setSelectedNode(item.id || "");
       }}
       onChange={setData}
       itemDefaults={{ open: false, arrow: "▸", icon: getRandomEmoji() }}
@@ -385,7 +386,8 @@ export const withCustomStyles = () => {
   const spanLabel = (
     <span style={{ fontFamily: "Arial", fontSize: 12 }}>Span</span>
   );
-  const [selectedNode, setSelectedNode] = useState<ReactTreeListProps["selectedKey"]>('')
+  const [selectedNode, setSelectedNode] =
+    useState<ReactTreeListProps["selectedKey"]>("");
 
   const [data, setData] = useState<ReactTreeListProps["data"]>([
     {
@@ -425,9 +427,9 @@ export const withCustomStyles = () => {
   return (
     <ReactTreeList
       data={data}
-      selectedKey={''}
+      selectedKey={""}
       onSelected={(item) => {
-        setSelectedNode(item.id || '')
+        setSelectedNode(item.id || "");
       }}
       onChange={setData}
       itemOptions={{
