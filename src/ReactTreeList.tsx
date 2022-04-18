@@ -30,7 +30,7 @@ export interface ReactTreeListProps {
   /**
    * Function that is triggered when drag completed
    */
-  onDrop(draggingNode: ReactTreeListItemType, dropNode: ReactTreeListItemType, dropType: string): void;
+  onDrop?(draggingNode: ReactTreeListItemType, dropNode: ReactTreeListItemType, dropType: string): void;
 
   /**
    * Defines the default values for item object
