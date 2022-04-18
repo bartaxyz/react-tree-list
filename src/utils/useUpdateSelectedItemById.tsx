@@ -1,7 +1,8 @@
 import { BaseItemType } from "../types/ItemTypes";
 
 export const useUpdateSelectedItemById = <T extends BaseItemType>(
-  data: T[]
+  data: T[],
+  callback: (data: T[]) => void
 ) => {
   return (updateId: string | undefined) => {
     if (!updateId) {
@@ -20,6 +21,6 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
     };
 
     data.forEach(recursiveUpdateId);
-    return data;
+    callback([...data]);
   };
 };

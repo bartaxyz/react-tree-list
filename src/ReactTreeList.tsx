@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { ItemOptions, ReactTreeListItem } from "./ReactTreeListItem";
@@ -12,7 +11,7 @@ export interface ReactTreeListProps {
    * The data to display in the list.
    */
   data: ReactTreeListItemType[];
-  selectedKey?: string | '';
+  selectedKey?: string | "";
   /**
    * Function that is triggered when data changes
    */
@@ -65,7 +64,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
   const [currentSelectedId, setCurrentSelectedId] = useState(selectedId);
 
   const updateSelectedItemById =
-    useUpdateSelectedItemById<ReactTreeListItemType>(data);
+    useUpdateSelectedItemById<ReactTreeListItemType>(data, onChange);
 
   /**
    * To make sure the event runs only once, we store in this variable
@@ -108,7 +107,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     setCurrentSelectedId(item.id || "");
 
     if (onSelected) {
-      onSelected(item);
+      onSelected({ ...item });
     }
   };
 
