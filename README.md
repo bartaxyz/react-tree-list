@@ -68,9 +68,16 @@ const Component = () => {
     console.log("choosed item =", item);
   };
 
+  const onDrop =(dragingNode: ReactTreeListItemType, dragNode: ReactTreeListItemType, drogType: string) => {
+    console.log('dragingNode=',dragingNode)
+    console.log('dragNode=',dragNode)
+    console.log('drogType=',drogType)
+  }
+
   return (
     <ReactTreeList
       data={data}
+      onDrop={onDrop}
       onChange={onTreeListChange}
       itemDefaults={{ open: false, arrow: "▸" }}
       selectedId="1"
