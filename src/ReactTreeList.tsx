@@ -17,8 +17,6 @@ export interface ReactTreeListProps {
    */
   onChange(data: ReactTreeListItemType[]): void;
 
-  onSelected(item: ReactTreeListItemType): void;
-
   /**
    * The ID of the selected item
    */
