@@ -11,7 +11,7 @@ export interface ReactTreeListProps {
    * The data to display in the list.
    */
   data: ReactTreeListItemType[];
-  selectedKey?: string | "";
+
   /**
    * Function that is triggered when data changes
    */
@@ -30,7 +30,11 @@ export interface ReactTreeListProps {
   /**
    * Function that is triggered when drag completed
    */
-  onDrop?(draggingNode: ReactTreeListItemType, dropNode: ReactTreeListItemType, dropType: string): void;
+  onDrop?(
+    draggingNode: ReactTreeListItemType,
+    dropNode: ReactTreeListItemType,
+    dropType: string
+  ): void;
 
   /**
    * Defines the default values for item object
@@ -133,25 +137,24 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       triggerOnChange = true;
 
       if (onDrop && item) {
-        const dragingNode = {...copyOfItem};
-        if('children' in dragingNode){
+        const dragingNode = { ...copyOfItem };
+        if ("children" in dragingNode) {
           delete dragingNode.children;
         }
 
-        const dragNode = {...item}
-        if('children' in dragNode){
-          // @ts-ignore
-          delete dragNode.children
+        const dragNode = { ...item };
+        if ("children" in dragNode) {
+          delete dragNode.children;
         }
 
-        onDrop(dragingNode, dragNode, 'inner')
+        onDrop(dragingNode, dragNode, "inner");
       }
     }
   };
 
   const moveIdBefore = (id: string, beforeId: string) => {
     const copyOfItem = removeByIdWithoutOnChange(id);
-    let dragNode = null;
+    let dragNode: ReactTreeListItemType | null = null;
     let breakRecursion = false;
 
     if (!copyOfItem) return;
@@ -166,7 +169,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       if (item.id === beforeId) {
         array.splice(index, 0, copyOfItem);
         breakRecursion = true;
-        dragNode = {...item};
+        dragNode = { ...item };
       } else if (item.children) {
         item.children.forEach(recursiveMoveIdAfter);
       }
@@ -177,17 +180,16 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     triggerOnChange = true;
 
     if (onDrop && dragNode) {
-      const dragingNode = {...copyOfItem};
-      if('children' in dragingNode){
+      const dragingNode = { ...copyOfItem };
+      if ("children" in dragingNode) {
         delete dragingNode.children;
       }
 
-      if('children' in dragNode){
-        // @ts-ignore
-        delete dragNode.children
+      if ("children" in dragNode) {
+        delete (dragNode as ReactTreeListItemType).children;
       }
 
-      onDrop(dragingNode, dragNode, 'before')
+      onDrop(dragingNode, dragNode, "before");
     }
   };
 
@@ -208,7 +210,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       if (item.id === afterId) {
         array.splice(index + 1, 0, copyOfItem);
         breakRecursion = true;
-        dragNode = {...item};
+        dragNode = { ...item };
       } else if (item.children) {
         item.children.forEach(recursiveMoveIdAfter);
       }
@@ -219,17 +221,16 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     triggerOnChange = true;
 
     if (onDrop && dragNode) {
-      const dragingNode = {...copyOfItem};
-      if('children' in dragingNode){
+      const dragingNode = { ...copyOfItem };
+      if ("children" in dragingNode) {
         delete dragingNode.children;
       }
 
-      if('children' in dragNode){
-        // @ts-ignore
-        delete dragNode.children
+      if ("children" in dragNode) {
+        delete (dragNode as ReactTreeListItemType).children;
       }
 
-      onDrop(dragingNode, dragNode, 'after')
+      onDrop(dragingNode, dragNode, "after");
     }
   };
 
