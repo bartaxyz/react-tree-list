@@ -295,7 +295,7 @@ const Root = styled(RootComponent)`
   ${Label}, ${Label} * {
     pointer-events: ${({ dragging }) => (dragging ? "none" : "")};
   }
-
+  
   ${Arrow} {
     display: flex;
     transition: 100ms;

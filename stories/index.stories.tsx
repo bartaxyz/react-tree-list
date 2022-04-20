@@ -11,6 +11,7 @@ import { rgba } from "polished";
 
 import { ReactTreeList, ReactTreeListProps } from "../src";
 import { getRandomEmoji } from "./utils/getRandomEmoji";
+import {ReactTreeListItemType} from "../build";
 
 export default {
   title: "Tree List",
@@ -327,10 +328,16 @@ export const withEmojis = () => {
     },
   ]);
 
+  function onDrop(dragingNode: ReactTreeListItemType, dragNode: ReactTreeListItemType, drogType: string){
+    console.log('dragingNode=',dragingNode)
+    console.log('dragNode=',dragNode)
+    console.log('drogType=',drogType)
+  }
   return (
     <ReactTreeList
       data={data}
       selectedId={selectedId}
+      onDrop={onDrop}
       onSelected={(item) => {
         setSelectedId(item.id ?? undefined);
       }}

@@ -68,9 +68,16 @@ const Component = () => {
     console.log("choosed item =", item);
   };
 
+  const onDrop =(dragingNode: ReactTreeListItemType, dragNode: ReactTreeListItemType, drogType: string) => {
+    console.log('dragingNode=',dragingNode)
+    console.log('dragNode=',dragNode)
+    console.log('drogType=',drogType)
+  }
+
   return (
     <ReactTreeList
       data={data}
+      onDrop={onDrop}
       onChange={onTreeListChange}
       itemDefaults={{ open: false, arrow: "▸" }}
       selectedId="1"
@@ -85,7 +92,7 @@ const Component = () => {
 There's a limited possibility to adjust the styles (background color, outline color, border radius, etc.) of the focused items using the `itemOptions` property.
 
 ```tsx
-const Component = () => {
+const Component = () => {
   ...
 
   return (
