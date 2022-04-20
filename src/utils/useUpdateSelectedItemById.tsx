@@ -22,5 +22,6 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
 
     data.forEach(recursiveUpdateId);
     callback([...data]);
+    return data;
   };
 };
