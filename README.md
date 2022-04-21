@@ -42,7 +42,7 @@ import { ReactTreeList, ReactTreeListProps } from "@bartaxyz/react-tree-list";
 
 This is a simple implementation with some items (one nested item) and defaults for each of the items.
 
-```tsx
+```jsx
 import React, { useState } from "react";
 import { ReactTreeList } from "@bartaxyz/react-tree-list";
 
@@ -67,12 +67,12 @@ const Component = () => {
   const onTreeListSelected = (item) => {
     console.log("choosed item =", item);
   };
-
-  const onDrop =(dragingNode: ReactTreeListItemType, dragNode: ReactTreeListItemType, drogType: string) => {
-    console.log('dragingNode=',dragingNode)
-    console.log('dragNode=',dragNode)
-    console.log('drogType=',drogType)
-  }
+  
+  const onDrop = (dragingNode, dragNode, drogType) => {
+    console.log("dragingNode:", dragingNode);
+    console.log("dragNode:", dragNode);
+    console.log("drogType:", drogType);
+  };
 
   return (
     <ReactTreeList
@@ -91,7 +91,7 @@ const Component = () => {
 
 There's a limited possibility to adjust the styles (background color, outline color, border radius, etc.) of the focused items using the `itemOptions` property.
 
-```tsx
+```jsx
 const Component = () => {
   ...
 
