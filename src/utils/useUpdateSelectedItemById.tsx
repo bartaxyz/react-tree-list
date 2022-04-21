@@ -1,4 +1,5 @@
 import { BaseItemType } from "../types/ItemTypes";
+import { useDeepClone } from "../hooks/useDeepClone";
 
 export const useUpdateSelectedItemById = <T extends BaseItemType>(
   data: T[],
@@ -8,11 +9,12 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
     if (!updateId) {
       return;
     }
+    const { deepClone } = useDeepClone();
     const recursiveUpdateId = (item: T, index: number, array: T[]) => {
       if (item.id === updateId) {
-        array[index] = { ...item, selected: true };
+        array[index] = deepClone({ ...item, selected: true });
       } else {
-        array[index] = { ...item, selected: false };
+        array[index] = deepClone({ ...item, selected: false });
       }
 
       if (item.children) {
@@ -21,7 +23,7 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
     };
 
     data.forEach(recursiveUpdateId);
-    callback([...data]);
+    callback(deepClone(data));
     return data;
   };
 };

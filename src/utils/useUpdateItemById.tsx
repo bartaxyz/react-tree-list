@@ -1,4 +1,5 @@
 import { BaseItemType } from "../types/ItemTypes";
+import { useDeepClone } from "../hooks/useDeepClone";
 
 export const useUpdateItemById = <T extends BaseItemType>(
   data: T[],
@@ -8,6 +9,7 @@ export const useUpdateItemById = <T extends BaseItemType>(
     if (!updateId) {
       return;
     }
+    const { deepClone } = useDeepClone();
 
     let breakUpdateId = false;
 
@@ -15,7 +17,7 @@ export const useUpdateItemById = <T extends BaseItemType>(
       if (breakUpdateId) return;
 
       if (item.id === updateId) {
-        array[index] = { ...item, ...updateData };
+        array[index] = deepClone({ ...item, ...updateData });
         breakUpdateId = true;
         return;
       }
@@ -27,6 +29,6 @@ export const useUpdateItemById = <T extends BaseItemType>(
 
     data.forEach(recursiveUpdateId);
 
-    callback([...data]);
+    callback(deepClone(data));
   };
 };

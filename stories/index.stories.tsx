@@ -344,6 +344,7 @@ export const withEmojis = () => {
       selectedId={selectedId}
       onDrop={onDrop}
       onSelected={(item) => {
+        console.log("selected item:", item)
         setSelectedId(item.id ?? undefined);
       }}
       onChange={setData}
