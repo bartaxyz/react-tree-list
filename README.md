@@ -60,6 +60,8 @@ const Component = () => {
     },
   ]);
 
+  const [draggable, setDraggable] = useState(true);
+
   const onTreeListChange = (data) => {
     setData(data);
   };
@@ -67,7 +69,7 @@ const Component = () => {
   const onTreeListSelected = (item) => {
     console.log("choosed item =", item);
   };
-  
+
   const onDrop = (dragingNode, dragNode, drogType) => {
     console.log("dragingNode:", dragingNode);
     console.log("dragNode:", dragNode);
@@ -77,6 +79,7 @@ const Component = () => {
   return (
     <ReactTreeList
       data={data}
+      draggable={draggable}
       onDrop={onDrop}
       onChange={onTreeListChange}
       itemDefaults={{ open: false, arrow: "▸" }}

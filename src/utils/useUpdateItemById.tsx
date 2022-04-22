@@ -1,5 +1,5 @@
 import { BaseItemType } from "../types/ItemTypes";
-import { useDeepClone } from "../hooks/useDeepClone";
+import cloneDeep from "lodash/cloneDeep";
 
 export const useUpdateItemById = <T extends BaseItemType>(
   data: T[],
@@ -9,7 +9,6 @@ export const useUpdateItemById = <T extends BaseItemType>(
     if (!updateId) {
       return;
     }
-    const { deepClone } = useDeepClone();
 
     let breakUpdateId = false;
 
@@ -17,7 +16,7 @@ export const useUpdateItemById = <T extends BaseItemType>(
       if (breakUpdateId) return;
 
       if (item.id === updateId) {
-        array[index] = deepClone({ ...item, ...updateData });
+        array[index] = cloneDeep({ ...item, ...updateData });
         breakUpdateId = true;
         return;
       }
@@ -29,6 +28,6 @@ export const useUpdateItemById = <T extends BaseItemType>(
 
     data.forEach(recursiveUpdateId);
 
-    callback(deepClone(data));
+    callback(cloneDeep(data));
   };
 };
