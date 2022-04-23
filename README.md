@@ -90,6 +90,8 @@ const Component = () => {
 };
 ```
 
+[Open this code in Code Sandbox](https://codesandbox.io/s/little-architecture-06phfm?file=/src/Component.js)
+
 ### Simple Style Customisation
 
 There's a limited possibility to adjust the styles (background color, outline color, border radius, etc.) of the focused items using the `itemOptions` property.
