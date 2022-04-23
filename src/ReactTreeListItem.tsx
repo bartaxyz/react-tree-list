@@ -28,6 +28,7 @@ export interface ItemOptions {
 const DEFAULT_COLOR = rgba(0, 0, 255, 1);
 
 export interface ReactTreeListItemProps {
+  draggable?: boolean;
   item: ReactTreeListItemType;
   selectedId: string;
   indent: number;
@@ -50,7 +51,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
   allowDropBefore,
   ...props
 }) => {
-  const { item } = props;
+  const { item, draggable } = props;
   const { label } = item;
   const RootRef = useRef<HTMLDivElement>(null);
   const DropAreaRef = useRef<HTMLDivElement>(null);
@@ -245,6 +246,7 @@ const RootComponent = React.forwardRef<
 >(
   (
     {
+      draggable,
       indent,
       selectedId,
       item,
@@ -256,7 +258,7 @@ const RootComponent = React.forwardRef<
       ...props
     },
     ref
-  ) => <div ref={ref} draggable={true} tabIndex={0} {...props} />
+  ) => <div ref={ref} draggable={draggable} tabIndex={0} {...props} />
 );
 
 const Arrow = styled.div``;

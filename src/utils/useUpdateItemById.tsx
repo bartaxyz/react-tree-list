@@ -1,4 +1,5 @@
 import { BaseItemType } from "../types/ItemTypes";
+import cloneDeep from "lodash/cloneDeep";
 
 export const useUpdateItemById = <T extends BaseItemType>(
   data: T[],
@@ -15,7 +16,7 @@ export const useUpdateItemById = <T extends BaseItemType>(
       if (breakUpdateId) return;
 
       if (item.id === updateId) {
-        array[index] = { ...item, ...updateData };
+        array[index] = cloneDeep({ ...item, ...updateData });
         breakUpdateId = true;
         return;
       }
@@ -27,6 +28,6 @@ export const useUpdateItemById = <T extends BaseItemType>(
 
     data.forEach(recursiveUpdateId);
 
-    callback([...data]);
+    callback(cloneDeep(data));
   };
 };

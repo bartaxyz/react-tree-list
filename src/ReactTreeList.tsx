@@ -6,7 +6,13 @@ import { ReactTreeListItemType } from "./types/ItemTypes";
 import { useGetItemById } from "./utils/useGetItemById";
 import { useUpdateItemById } from "./utils/useUpdateItemById";
 import { useUpdateSelectedItemById } from "./utils/useUpdateSelectedItemById";
+import cloneDeep from "lodash/cloneDeep";
+
 export interface ReactTreeListProps {
+  /**
+   * enable drag
+   */
+  draggable?: boolean | true;
   /**
    * The data to display in the list.
    */
@@ -51,6 +57,7 @@ export interface ReactTreeListProps {
 }
 
 export const ReactTreeList: React.FC<ReactTreeListProps> = ({
+  draggable,
   data,
   selectedId,
   onChange,
@@ -60,7 +67,6 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
   itemOptions = {},
 }) => {
   const { generate: generateUniqueId } = useUniqueId();
-
   const lastOpenState = useRef(false);
 
   const getItemById = useGetItemById<ReactTreeListItemType>(data);
@@ -115,7 +121,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     setCurrentSelectedId(item.id || "");
 
     if (onSelected) {
-      onSelected({ ...item });
+      onSelected(cloneDeep(item));
     }
   };
 
@@ -137,12 +143,12 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       triggerOnChange = true;
 
       if (onDrop && item) {
-        const dragingNode = { ...copyOfItem };
+        const dragingNode = cloneDeep(copyOfItem);
         if ("children" in dragingNode) {
           delete dragingNode.children;
         }
 
-        const dragNode = { ...item };
+        const dragNode = cloneDeep(item);
         if ("children" in dragNode) {
           delete dragNode.children;
         }
@@ -169,7 +175,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       if (item.id === beforeId) {
         array.splice(index, 0, copyOfItem);
         breakRecursion = true;
-        dragNode = { ...item };
+        dragNode = cloneDeep(item);
       } else if (item.children) {
         item.children.forEach(recursiveMoveIdAfter);
       }
@@ -180,7 +186,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     triggerOnChange = true;
 
     if (onDrop && dragNode) {
-      const dragingNode = { ...copyOfItem };
+      const dragingNode = cloneDeep(copyOfItem);
       if ("children" in dragingNode) {
         delete dragingNode.children;
       }
@@ -210,7 +216,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
       if (item.id === afterId) {
         array.splice(index + 1, 0, copyOfItem);
         breakRecursion = true;
-        dragNode = { ...item };
+        dragNode = cloneDeep(item);
       } else if (item.children) {
         item.children.forEach(recursiveMoveIdAfter);
       }
@@ -221,7 +227,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
     triggerOnChange = true;
 
     if (onDrop && dragNode) {
-      const dragingNode = { ...copyOfItem };
+      const dragingNode = cloneDeep(copyOfItem);
       if ("children" in dragingNode) {
         delete dragingNode.children;
       }
@@ -264,6 +270,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
         children.push(
           <ReactTreeListItem
             key={item.id}
+            draggable={draggable ?? true}
             selectedId={currentSelectedId || ""}
             item={{ ...itemDefaults, ...item }}
             options={itemOptions}
@@ -316,7 +323,7 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
 
   useEffect(() => {
     if (triggerOnChange) {
-      onChange([...data]);
+      onChange(cloneDeep(data));
     }
   }, [triggerOnChange]);
 

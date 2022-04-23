@@ -66,7 +66,9 @@
     "react-dom": ">=16"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.182",
     "babel-register": "^6.26.0",
+    "lodash": "^4.17.21",
     "polished": "^4.2.2",
     "styled-components": "^5.1.1"
   }

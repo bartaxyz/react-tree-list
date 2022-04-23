@@ -1,4 +1,5 @@
 import { BaseItemType } from "../types/ItemTypes";
+import cloneDeep from "lodash/cloneDeep";
 
 export const useUpdateSelectedItemById = <T extends BaseItemType>(
   data: T[],
@@ -10,9 +11,9 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
     }
     const recursiveUpdateId = (item: T, index: number, array: T[]) => {
       if (item.id === updateId) {
-        array[index] = { ...item, selected: true };
+        array[index] = cloneDeep({ ...item, selected: true });
       } else {
-        array[index] = { ...item, selected: false };
+        array[index] = cloneDeep({ ...item, selected: false });
       }
 
       if (item.children) {
@@ -21,7 +22,7 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
     };
 
     data.forEach(recursiveUpdateId);
-    callback([...data]);
+    callback(cloneDeep(data));
     return data;
   };
 };

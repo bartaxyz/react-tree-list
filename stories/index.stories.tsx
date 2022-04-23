@@ -327,7 +327,7 @@ export const withEmojis = () => {
       ],
     },
   ]);
-
+  const [draggable, setDraggable] = useState(true);
   function onDrop(
     dragingNode: ReactTreeListItemType,
     dragNode: ReactTreeListItemType,
@@ -337,17 +337,51 @@ export const withEmojis = () => {
     console.log("dragNode:", dragNode);
     console.log("drogType:", drogType);
   }
+
   return (
-    <ReactTreeList
-      data={data}
-      selectedId={selectedId}
-      onDrop={onDrop}
-      onSelected={(item) => {
-        setSelectedId(item.id ?? undefined);
-      }}
-      onChange={setData}
-      itemDefaults={{ open: false, arrow: "▸", icon: getRandomEmoji() }}
-    />
+    <>
+      <div
+        style={{
+          padding: "12px 24px",
+          border: "1px solid #ddd",
+          marginBottom: "20px",
+          borderRadius: "8px",
+        }}
+      >
+        <span style={{ marginRight: "20px" }}>Enable Drag</span>
+        <input
+          type="radio"
+          name="draggable"
+          value="True"
+          checked={draggable}
+          onClick={() => {
+            setDraggable(true);
+          }}
+        />
+        <span style={{ marginRight: "20px" }}>True</span>
+        <input
+          type="radio"
+          name="draggable"
+          value="False"
+          onClick={() => {
+            setDraggable(false);
+          }}
+        />
+        False
+      </div>
+      <ReactTreeList
+        draggable={draggable}
+        data={data}
+        selectedId={selectedId}
+        onDrop={onDrop}
+        onSelected={(item) => {
+          console.log("selected item:", item);
+          setSelectedId(item.id ?? undefined);
+        }}
+        onChange={setData}
+        itemDefaults={{ open: false, arrow: "▸", icon: getRandomEmoji() }}
+      />
+    </>
   );
 };
 
@@ -390,12 +424,9 @@ export const withCustomStyles = () => {
     </svg>
   );
 
-  const divLabel = (
-    <span style={{ fontFamily: "Arial", fontSize: 12 }}>Div</span>
-  );
-  const spanLabel = (
-    <span style={{ fontFamily: "Arial", fontSize: 12 }}>Span</span>
-  );
+  const divLabel = "cool";
+  const spanLabel = "drag tree list";
+
   const [selectedId, setSelectedId] =
     useState<ReactTreeListProps["selectedId"]>("");
 
