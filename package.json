@@ -42,6 +42,7 @@
     "@types/jest": "^26.0.7",
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.6.4",
+    "@types/lodash": "^4.14.182",
     "@types/react-dom": "^16.9.8",
     "@types/styled-components": "^5.1.1",
     "babel-loader": "^8.1.0",
@@ -66,10 +67,9 @@
     "react-dom": ">=16"
   },
   "dependencies": {
-    "@types/lodash": "^4.14.182",
-    "babel-register": "^6.26.0",
-    "lodash": "^4.17.21",
-    "polished": "^4.2.2",
-    "styled-components": "^5.1.1"
+    "babel-register": "6.26.0",
+    "lodash": "4.17.21",
+    "polished": "4.2.2",
+    "styled-components": "5.3.5"
   }
 }
