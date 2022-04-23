@@ -1,22 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { cloneDeep } from "lodash";
 import { ItemOptions, ReactTreeListItem } from "./ReactTreeListItem";
 import { useUniqueId } from "./hooks/useUniqueId";
 import { ReactTreeListItemType } from "./types/ItemTypes";
 import { useGetItemById } from "./utils/useGetItemById";
 import { useUpdateItemById } from "./utils/useUpdateItemById";
 import { useUpdateSelectedItemById } from "./utils/useUpdateSelectedItemById";
-import cloneDeep from "lodash/cloneDeep";
 
 export interface ReactTreeListProps {
-  /**
-   * enable drag
-   */
-  draggable?: boolean | true;
   /**
    * The data to display in the list.
    */
   data: ReactTreeListItemType[];
+
+  /**
+   * Enable dragging of the items
+   */
+  draggable?: boolean | true;
 
   /**
    * Function that is triggered when data changes
