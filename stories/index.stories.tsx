@@ -424,8 +424,12 @@ export const withCustomStyles = () => {
     </svg>
   );
 
-  const divLabel = "cool";
-  const spanLabel = "drag tree list";
+  const divLabel = (
+    <span style={{ fontFamily: "Arial", fontSize: 12 }}>Div</span>
+  );
+  const spanLabel = (
+    <span style={{ fontFamily: "Arial", fontSize: 12 }}>Span</span>
+  );
 
   const [selectedId, setSelectedId] =
     useState<ReactTreeListProps["selectedId"]>("");

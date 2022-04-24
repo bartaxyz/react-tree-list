@@ -1,5 +1,5 @@
+import { cloneDeep } from "lodash";
 import { BaseItemType } from "../types/ItemTypes";
-import cloneDeep from "lodash/cloneDeep";
 
 export const useUpdateSelectedItemById = <T extends BaseItemType>(
   data: T[],
