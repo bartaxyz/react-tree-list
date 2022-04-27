@@ -270,6 +270,7 @@ const BeforeDropAreaHighlight = styled.div``;
 const AfterDropArea = styled.div``;
 const AfterDropAreaHighlight = styled.div``;
 const Root = styled(RootComponent)`
+  cursor: default;
   position: relative;
   display: grid;
   grid-template-columns: auto auto 1fr;
