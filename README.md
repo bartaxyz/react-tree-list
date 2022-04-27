@@ -60,8 +60,6 @@ const Component = () => {
     },
   ]);
 
-  const [draggable, setDraggable] = useState(true);
-
   const onTreeListChange = (data) => {
     setData(data);
   };
