@@ -16,7 +16,7 @@ export const useUpdateItemById = <T extends BaseItemType>(
       if (breakUpdateId) return;
 
       if (item.id === updateId) {
-        array[index] = cloneDeep({ ...item, ...updateData });
+        array[index] = { ...item, ...updateData };
         breakUpdateId = true;
         return;
       }

@@ -11,9 +11,9 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
     }
     const recursiveUpdateId = (item: T, index: number, array: T[]) => {
       if (item.id === updateId) {
-        array[index] = cloneDeep({ ...item, selected: true });
+        array[index] = { ...item, selected: true };
       } else {
-        array[index] = cloneDeep({ ...item, selected: false });
+        array[index] = { ...item, selected: false };
       }
 
       if (item.children) {

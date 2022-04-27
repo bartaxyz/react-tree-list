@@ -323,6 +323,16 @@ export const ReactTreeList: React.FC<ReactTreeListProps> = ({
   };
 
   useEffect(() => {
+    if (selectedId) {
+      const selectedItem = getItemById(selectedId);
+      if (selectedItem) {
+        updateSelectedItemById(selectedItem.id);
+        selectedNode(selectedItem);
+      }
+    }
+  }, [selectedId]);
+
+  useEffect(() => {
     if (triggerOnChange) {
       onChange(cloneDeep(data));
     }
