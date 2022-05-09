@@ -9,7 +9,9 @@ export interface BaseItemType {
 
 export interface ReactTreeListItemType extends BaseItemType {
   /**
-   * ID/key of the item.
+   * Unique identificator of item.
+   *
+   * It's expected that this id will be a string. Otherwise certain features may not work.
    */
   id?: string;
 
