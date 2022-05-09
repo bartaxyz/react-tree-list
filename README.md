@@ -42,6 +42,8 @@ import { ReactTreeList, ReactTreeListProps } from "@bartaxyz/react-tree-list";
 
 This is a simple implementation with some items (one nested item) and defaults for each of the items.
 
+⚠️ If you're adding your own `id` parameter, it's important that it's a string and not a number or other type.
+
 ```jsx
 import React, { useState } from "react";
 import { ReactTreeList } from "@bartaxyz/react-tree-list";
