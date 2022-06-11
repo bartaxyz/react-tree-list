@@ -202,7 +202,6 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
       // Custom properties
       dragging={dragging}
       isDragged={isDragged}
-      onClick={onClick}
       onDrag={onDrag}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
@@ -211,15 +210,16 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
       {item.arrow && (
         <Arrow
           onClick={(event) => {
-            event.stopPropagation();
             onArrowClick();
           }}
         >
           {item.arrow}
         </Arrow>
       )}
-      {item.icon && <Icon>{item.icon}</Icon>}
-      <Label>{label}</Label>
+      <Content onClick={onClick}>
+        {item.icon && <Icon>{item.icon}</Icon>}
+        <Label>{label}</Label>
+      </Content>
 
       {allowDropBefore && (
         <React.Fragment>
@@ -261,6 +261,7 @@ const RootComponent = React.forwardRef<
   ) => <div ref={ref} draggable={draggable} tabIndex={0} {...props} />
 );
 
+const Content = styled.div``;
 const Arrow = styled.div``;
 const Icon = styled.div``;
 const Label = styled.div``;
@@ -273,9 +274,8 @@ const Root = styled(RootComponent)`
   cursor: default;
   position: relative;
   display: grid;
-  grid-template-columns: auto auto 1fr;
+  grid-template-columns: auto 1fr;
   grid-column-gap: 8px;
-  padding: 4px;
   padding-left: ${({ indent }) => indent * 24 + 12}px;
   align-items: center;
   border-radius: ${({ options }) => options.focusedBorderRadius ?? 4}px;
@@ -299,6 +299,12 @@ const Root = styled(RootComponent)`
     pointer-events: ${({ dragging }) => (dragging ? "none" : "")};
   }
 
+  ${Content} {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-column-gap: 8px;
+    padding: 4px 0;
+  }
   ${Arrow} {
     display: flex;
     transition: 100ms;
