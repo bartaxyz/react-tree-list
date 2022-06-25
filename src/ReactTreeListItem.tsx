@@ -216,6 +216,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
           {item.arrow}
         </Arrow>
       )}
+
       <Content onClick={onClick}>
         {item.icon && <Icon>{item.icon}</Icon>}
         <Label>{label}</Label>
