@@ -9,9 +9,12 @@ import {
 } from "@storybook/addon-docs/blocks";
 import { rgba } from "polished";
 
-import { ReactTreeList, ReactTreeListProps } from "../src";
+import {
+  ReactTreeList,
+  ReactTreeListItemType,
+  ReactTreeListProps,
+} from "../src";
 import { getRandomEmoji } from "./utils/getRandomEmoji";
-import { ReactTreeListItemType } from "../build";
 
 export default {
   title: "Tree List",
