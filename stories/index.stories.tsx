@@ -6,7 +6,7 @@ import {
   Description,
   Primary,
   Stories,
-} from "@storybook/addon-docs/blocks";
+} from "@storybook/blocks";
 import { rgba } from "polished";
 
 import {

@@ -10,7 +10,7 @@ export const useGetItemById = <T extends BaseItemType>(data: T[]) => {
       }
 
       if (currentItem.children) {
-        currentItem.children.forEach(recursiveGetById);
+        (currentItem.children as T[]).forEach(recursiveGetById);
       }
     };
 
