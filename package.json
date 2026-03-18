@@ -16,10 +16,10 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "lint": "oxlint src",
-    "storybook": "start-storybook",
-    "build-storybook": "build-storybook -c .storybook -o .out",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o .out",
     "build": "vite build",
-    "prepublishOnly": "bun run build",
+    "prepublishOnly": "npm run build",
     "prepare": "simple-git-hooks"
   },
   "repository": {
@@ -48,6 +48,11 @@
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "@types/styled-components": "^5.1.1",
+    "@storybook/addon-essentials": "^8.6.18",
+    "@storybook/react": "^8.6.18",
+    "@storybook/react-vite": "^8.6.18",
+    "@storybook/theming": "^8.6.18",
+    "storybook": "^8.6.18",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-v8": "^2.1.8",
     "simple-git-hooks": "^2.11.1",
@@ -64,6 +69,9 @@
     "react": ">=16",
     "react-dom": ">=16"
   },
+  "ignoredDependencies": [
+    "husky"
+  ],
   "simple-git-hooks": {
     "pre-commit": "npx pretty-quick --staged"
   },
