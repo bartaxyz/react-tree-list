@@ -49,7 +49,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "@vitest/coverage-v8": "^2.1.8",
+    "@vitest/coverage-v8": "^4.1.0",
     "jsdom": "^25.0.1",
     "oxlint": "^0.15.0",
     "prettier": "2.6.2",
@@ -61,7 +61,7 @@
     "typescript": "^5.7.0",
     "vite": "^6.0.0",
     "vite-plugin-dts": "^4.3.0",
-    "vitest": "^2.1.8"
+    "vitest": "^4.1.0"
   },
   "peerDependencies": {
     "react": ">=18",
@@ -71,7 +71,7 @@
     "pre-commit": "npx pretty-quick --staged"
   },
   "dependencies": {
-    "lodash": "4.17.21",
+    "lodash": "^4.17.23",
     "polished": "4.2.2",
     "styled-components": "^6.0.0"
   }
