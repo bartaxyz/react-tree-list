@@ -94,6 +94,8 @@ const Component = () => {
 
 There's a limited possibility to adjust the styles (background color, outline color, border radius, etc.) of the focused items using the `itemOptions` property.
 
+By default, the focus outline and background colors inherit from the element's `currentColor`, so the component adapts automatically to your text color — including dark mode.
+
 ```jsx
 const Component = () => {
   ...

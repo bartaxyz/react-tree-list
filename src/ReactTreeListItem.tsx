@@ -1,4 +1,3 @@
-import { rgba } from "polished";
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { ReactTreeListItemType } from "./types/ItemTypes";
@@ -25,7 +24,7 @@ export interface ItemOptions {
   focusedBackgroundColor?: string;
 }
 
-const DEFAULT_COLOR = rgba(0, 0, 255, 1);
+const DEFAULT_COLOR = "currentColor";
 
 export interface ReactTreeListItemProps {
   draggable?: boolean;
@@ -283,7 +282,8 @@ const Root = styled(RootComponent)`
   transition: background 100ms;
   background-color: ${({ item, selectedId, options }) =>
     item.selected || selectedId === item.id
-      ? options.focusedBackgroundColor ?? rgba(DEFAULT_COLOR, 0.075)
+      ? options.focusedBackgroundColor ??
+        "color-mix(in srgb, currentColor 8%, transparent)"
       : "transparent"};
 
   opacity: ${({ isDragged }) => (isDragged ? 0.5 : 1)};

@@ -42,6 +42,7 @@
     "@storybook/addon-essentials": "^8.6.18",
     "@storybook/react": "^8.6.18",
     "@storybook/react-vite": "^8.6.18",
+    "@storybook/test": "^8.6.18",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
     "@types/lodash": "^4.14.182",
@@ -72,7 +73,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.23",
-    "polished": "4.2.2",
     "styled-components": "^6.0.0"
   }
 }
