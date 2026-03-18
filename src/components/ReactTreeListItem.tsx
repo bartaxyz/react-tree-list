@@ -1,6 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  HTMLAttributes,
+  RefObject,
+  forwardRef,
+  FC,
+} from "react";
 import styled from "styled-components";
-import { ReactTreeListItemType } from "./types/ItemTypes";
+import { ReactTreeListItemType } from "../types";
 
 export interface ItemOptions {
   /**
@@ -42,7 +50,7 @@ export interface ReactTreeListItemProps {
   options: ItemOptions;
 }
 
-export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
+export const ReactTreeListItem: FC<ReactTreeListItemProps> = ({
   onDragging,
   onDropInside,
   onDropBefore,
@@ -84,11 +92,11 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     }
   };
 
-  const onDrag: React.HTMLAttributes<HTMLDivElement>["onDrag"] = () => {
+  const onDrag: HTMLAttributes<HTMLDivElement>["onDrag"] = () => {
     // setIsDragged(true);
   };
 
-  const onDragStart: React.HTMLAttributes<HTMLDivElement>["onDragStart"] = (
+  const onDragStart: HTMLAttributes<HTMLDivElement>["onDragStart"] = (
     event
   ) => {
     onDragging && onDragging(true);
@@ -98,11 +106,11 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     }
   };
 
-  const onDragEnd: React.HTMLAttributes<HTMLDivElement>["onDragEnd"] = () => {
+  const onDragEnd: HTMLAttributes<HTMLDivElement>["onDragEnd"] = () => {
     onDragging && onDragging(false);
   };
 
-  const onFocusKeyPress: React.HTMLAttributes<HTMLDivElement>["onKeyPress"] = (
+  const onFocusKeyPress: HTMLAttributes<HTMLDivElement>["onKeyPress"] = (
     event
   ) => {
     if (event.which === 13) {
@@ -131,7 +139,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     };
   }, []);
 
-  const dropArea: React.HTMLAttributes<HTMLDivElement> = {
+  const dropArea: HTMLAttributes<HTMLDivElement> = {
     onDrop: (event) => {
       if (
         event.dataTransfer.getData("itemId") !== item.id &&
@@ -148,7 +156,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     onDragLeave: () => setDragOver(false),
   };
 
-  const beforeDropArea: React.HTMLAttributes<HTMLDivElement> = {
+  const beforeDropArea: HTMLAttributes<HTMLDivElement> = {
     onDrop: (event) => {
       if (
         event.dataTransfer.getData("itemId") !== item.id &&
@@ -165,7 +173,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     onDragLeave: () => setBeforeDropAreaDragOver(false),
   };
 
-  const afterDropArea: React.HTMLAttributes<HTMLDivElement> = {
+  const afterDropArea: HTMLAttributes<HTMLDivElement> = {
     onDrop: (event) => {
       if (
         item.children &&
@@ -190,7 +198,7 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
     onDragLeave: () => setAfterDropAreaDragOver(false),
   };
 
-  const onClick: React.HTMLAttributes<HTMLDivElement>["onClick"] = (event) => {
+  const onClick: HTMLAttributes<HTMLDivElement>["onClick"] = (event) => {
     onSelected();
   };
 
@@ -222,10 +230,10 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
       </Content>
 
       {allowDropBefore && (
-        <React.Fragment>
+        <>
           <BeforeDropArea ref={BeforeDropAreaRef} {...beforeDropArea} />
           <BeforeDropAreaHighlight />
-        </React.Fragment>
+        </>
       )}
 
       <DropArea ref={DropAreaRef} {...dropArea} />
@@ -235,11 +243,11 @@ export const ReactTreeListItem: React.FC<ReactTreeListItemProps> = ({
   );
 };
 
-const RootComponent = React.forwardRef<
+const RootComponent = forwardRef<
   HTMLDivElement,
   ReactTreeListItemProps &
-    React.HTMLAttributes<HTMLDivElement> & {
-      ref?: React.RefObject<HTMLDivElement>;
+    HTMLAttributes<HTMLDivElement> & {
+      ref?: RefObject<HTMLDivElement>;
       dragging?: boolean;
       isDragged?: boolean;
     }

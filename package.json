@@ -15,6 +15,8 @@
   "scripts": {
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
+    "bench": "vitest bench",
+    "bench:save": "vitest bench --outputJson bench-baseline.json",
     "lint": "oxlint src",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o .out",
@@ -45,7 +47,6 @@
     "@storybook/test": "^8.6.18",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",
-    "@types/lodash": "^4.14.182",
     "@types/node": "^22.0.0",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
@@ -72,7 +73,6 @@
     "pre-commit": "npx pretty-quick --staged"
   },
   "dependencies": {
-    "lodash": "^4.17.23",
     "styled-components": "^6.0.0"
   }
 }

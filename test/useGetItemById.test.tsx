@@ -1,5 +1,5 @@
 import { ReactTreeListItemType } from "../src";
-import { useGetItemById } from "../src/utils/useGetItemById";
+import { getItemById } from "../src/tree";
 
 const nestedData: ReactTreeListItemType[] = [
   { id: "A1", label: "A1" },
@@ -16,20 +16,17 @@ const nestedData: ReactTreeListItemType[] = [
   },
 ];
 
-describe("useGetItemById", () => {
+describe("getItemById", () => {
   it("should return undefined for empty data", () => {
-    const getItemById = useGetItemById<ReactTreeListItemType>([]);
-    expect(getItemById("")).toBeUndefined();
+    expect(getItemById([], "")).toBeUndefined();
   });
 
   it("should return undefined when id is not found", () => {
-    const getItemById = useGetItemById<ReactTreeListItemType>(nestedData);
-    expect(getItemById("")).toBeUndefined();
+    expect(getItemById(nestedData, "")).toBeUndefined();
   });
 
   it('should find nested item with id "C2"', () => {
-    const getItemById = useGetItemById<ReactTreeListItemType>(nestedData);
-    const item = getItemById("C2");
+    const item = getItemById(nestedData, "C2");
     expect(item?.id).toBe("C2");
     expect(item?.label).toBe("C2");
   });
