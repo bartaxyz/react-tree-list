@@ -3,7 +3,7 @@
     "target": "ES2018",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "lib": ["ES2018", "DOM"],
+    "lib": ["ES2019", "DOM"],
     "jsx": "react-jsx",
     "strict": true,
     "declaration": true,
@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "types": ["vitest/globals"]
   },
-  "include": ["src", "test"],
-  "exclude": ["node_modules", "stories", "dist"]
+  "include": ["src", "test", "stories"],
+  "exclude": ["node_modules", "dist"]
 }

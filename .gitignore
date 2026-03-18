@@ -12,3 +12,4 @@ coverage
 /.idea
 *.lock
 /dist
+bench-baseline.json

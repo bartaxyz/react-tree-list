@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), dts({ include: ["src"] })],
   build: {
     lib: {
-      entry: resolve(__dirname, "src/index.tsx"),
+      entry: resolve(__dirname, "src/index.ts"),
       formats: ["es", "cjs"],
       fileName: (format) => `index.${format === "es" ? "js" : "cjs"}`,
     },
@@ -17,8 +17,6 @@ export default defineConfig({
         "react-dom",
         "react/jsx-runtime",
         "styled-components",
-        "lodash",
-        "polished",
       ],
       output: {
         globals: {
