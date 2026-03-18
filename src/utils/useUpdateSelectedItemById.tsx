@@ -17,7 +17,7 @@ export const useUpdateSelectedItemById = <T extends BaseItemType>(
       }
 
       if (item.children) {
-        item.children.forEach(recursiveUpdateId);
+        (item.children as T[]).forEach(recursiveUpdateId);
       }
     };
 

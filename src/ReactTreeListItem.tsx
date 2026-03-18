@@ -271,7 +271,8 @@ const BeforeDropArea = styled.div``;
 const BeforeDropAreaHighlight = styled.div``;
 const AfterDropArea = styled.div``;
 const AfterDropAreaHighlight = styled.div``;
-const Root = styled(RootComponent)`
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Root = styled(RootComponent as any)`
   cursor: default;
   position: relative;
   display: grid;
