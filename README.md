@@ -65,13 +65,13 @@ const Component = () => {
   };
 
   const onTreeListSelected = (item) => {
-    console.log("choosed item =", item);
+    console.log("selected item =", item);
   };
 
-  const onDrop = (dragingNode, dragNode, drogType) => {
-    console.log("dragingNode:", dragingNode);
-    console.log("dragNode:", dragNode);
-    console.log("drogType:", drogType);
+  const onDrop = (draggingNode, dropNode, dropType) => {
+    console.log("draggingNode:", draggingNode);
+    console.log("dropNode:", dropNode);
+    console.log("dropType:", dropType);
   };
 
   return (
